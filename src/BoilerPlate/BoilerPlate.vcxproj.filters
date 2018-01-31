@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="SDLEvent.cpp" />
+    <ClCompile Include="TimeManager.cpp" />
+    <ClCompile Include="stb_image.c" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="colorPalet.cpp" />
+    <ClCompile Include="MathUtilities.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.hpp" />
+    <ClInclude Include="SDLEvent.hpp" />
+    <ClInclude Include="TimeManager.hpp" />
+    <ClInclude Include="Color.hpp" />
+    <ClInclude Include="ColorPalet.hpp" />
+    <ClInclude Include="MathUtilities.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{6f9fb37f-e47b-46c3-8209-dbf486018555}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Source files">
+      <UniqueIdentifier>{0a3ec513-922c-4b14-83e3-98e1934fea74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Header files">
+      <UniqueIdentifier>{da8cc683-e66e-46b9-be58-7d0e16e23f76}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

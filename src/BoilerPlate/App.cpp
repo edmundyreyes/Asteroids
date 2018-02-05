@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include "colorPalet.hpp"
+#include "Player.h"
 
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
@@ -11,6 +12,7 @@ namespace Engine
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
 	double ejeXp = 25.0, ejeXn = -25.0, ejeYp = 25.00, ejeYn = -25.00;
+	Player jugadorUno = Player(0);
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -85,20 +87,20 @@ namespace Engine
 			OnExit();
 			break;
 		case SDL_SCANCODE_UP:
-			ejeYp += 10;
-			ejeYn += 10;
+			jugadorUno.playerUp();
+			SDL_Log("UP was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_DOWN:
-			ejeYn -= 10;
-			ejeYp -= 10;
+			jugadorUno.playerDown();
+			SDL_Log("DOWN was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_LEFT:
-			ejeXn -= 10;
-			ejeXp -= 10;
+			jugadorUno.playerLeft();
+			SDL_Log("LEFT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_RIGHT:
-			ejeXn += 10;
-			ejeXp += 10;
+			jugadorUno.playerRight();
+			SDL_Log("RIGHT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		default:
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
@@ -147,15 +149,7 @@ namespace Engine
 		//            r      g    y		b
 		glClearColor(0.0, 0.50f, 0.50f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
-		glBegin(GL_LINE_LOOP);
-		glColor3f(1.0f, 0.55f, 0.50f);
-		glVertex2f(ejeXp, ejeYp);
-		glVertex2f(ejeXp, ejeYn);
-		glVertex2f(ejeXn, ejeYp);
-		glVertex2f(ejeXn, ejeYn);
-		glEnd();
-
+		jugadorUno.renderPlayer();
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 

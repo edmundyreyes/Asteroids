@@ -9,6 +9,9 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="colorPalet.cpp" />
     <ClCompile Include="MathUtilities.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -17,6 +20,9 @@
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="ColorPalet.hpp" />
     <ClInclude Include="MathUtilities.hpp" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

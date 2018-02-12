@@ -11,13 +11,15 @@ struct Player
 	Player(Vector2);
 	/// funciones //////////////////////////////////////////////
 	
-	void playerUp();
-	void playerDown();
-	void playerLeft();
-	void playerRight();
-	float showX();
-	float showY();
-	void renderPlayer();
+	void renderPlayer(void);
+	void renderThruster();
+	void Warping(void);
+	void moveForward(void);
+	void rotateLeft(void);
+	void rotateRight(void);
+	void Move(float , float);
+
 	/// miembros ///////////////////////////////////////////////
 	Vector2 jugador;
+	bool trushterBool;
 };

@@ -5,7 +5,8 @@
 
 Vector2 parametroX = Vector2(10,0);
 Vector2 parametroY = Vector2(0,10);
-
+int screenWidth = 570;
+int screenHeight = 330;
 Player Player::Origin = Player();
 
 Player::Player()
@@ -20,32 +21,49 @@ Player::Player(float newx, float newy) {
 Player::Player(Vector2 vec) {
 	jugador = vec;
 }
-void Player::playerUp() {
-	jugador += parametroY;
+void Player::Move(float _x, float _y) {
+	Vector2 movement = Vector2(_x, _y);
+	jugador += movement;
+	Warping();
 }
-void Player::playerDown() {
-	jugador -= parametroY;
+void Player::Warping() {
+
+	//Update();
+	if (jugador.x < -screenWidth) {
+		jugador.x = screenWidth;
+	}
+	else if (jugador.x > screenWidth)
+		jugador.x = -screenWidth;
+
+	if (jugador.y < -screenHeight) {
+		jugador.y = screenHeight;
+	}
+	else if (jugador.y > screenHeight)
+		jugador.y = -screenHeight;
 }
-void Player::playerLeft() {
-	jugador -= parametroX;
+
+void Player::moveForward() {}
+
+void Player::rotateLeft() {}
+
+void Player::rotateRight() {}
+
+void Player::renderThruster() {
+	if (trushterBool) {
+		glBegin(GL_LINE_LOOP);
+		glVertex2f(-5.0 + jugador.x, -4.0 + jugador.y);
+		glVertex2f(5.0 + jugador.x, -4.0 + jugador.y);
+		glVertex2f(0.0 + jugador.x, -15.0 + jugador.y);
+		glEnd();
+	}
 }
-void Player::playerRight() {
-	jugador += parametroX;
-}
-float Player::showX() {
-	return jugador.x;
-}
-float Player::showY() {
-	return jugador.y;
-}
-//started value, positive and negative
-float stVp = 25, stVn = -25;
 void Player::renderPlayer() {
 	glBegin(GL_LINE_LOOP);
 	glColor3f(1.0f, 0.55f, 0.50f);
-	glVertex2f(stVp + showX(), stVp + showY());
-	glVertex2f(stVp + showX(), stVn + showY());
-	glVertex2f(stVn + showX(), stVp + showY());
-	glVertex2f(stVn + showX(), stVn + showY());
+	glVertex2f(0 + jugador.x, 20 + jugador.y);
+	glVertex2f(12 + jugador.x, -10 + jugador.y);
+	glVertex2f(6 + jugador.x, -4 + jugador.y);
+	glVertex2f(-6 + jugador.x, -4 + jugador.y);
+	glVertex2f(-12 + jugador.x, -10 + jugador.y);
 	glEnd();
 }

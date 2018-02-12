@@ -11,7 +11,7 @@ namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
-	double ejeXp = 25.0, ejeXn = -25.0, ejeYp = 25.00, ejeYn = -25.00;
+
 	Player jugadorUno = Player(0);
 
 	App::App(const std::string& title, const int width, const int height)
@@ -87,19 +87,27 @@ namespace Engine
 			OnExit();
 			break;
 		case SDL_SCANCODE_UP:
-			jugadorUno.playerUp();
+			jugadorUno.Move( 0 , 10 );
+			jugadorUno.trushterBool = true;
+			jugadorUno.renderThruster();
 			SDL_Log("UP was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_DOWN:
-			jugadorUno.playerDown();
+			jugadorUno.Move( 0 , -10);
+			jugadorUno.trushterBool = false;
+			jugadorUno.renderThruster();
 			SDL_Log("DOWN was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_LEFT:
-			jugadorUno.playerLeft();
+			jugadorUno.Move(-10 , 0);
+			jugadorUno.trushterBool = false;
+			jugadorUno.renderThruster();
 			SDL_Log("LEFT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_RIGHT:
-			jugadorUno.playerRight();
+			jugadorUno.Move(10,0);
+			jugadorUno.trushterBool = false;
+			jugadorUno.renderThruster();
 			SDL_Log("RIGHT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		default:
@@ -150,6 +158,7 @@ namespace Engine
 		glClearColor(0.0, 0.50f, 0.50f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		jugadorUno.renderPlayer();
+		jugadorUno.renderThruster();
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 

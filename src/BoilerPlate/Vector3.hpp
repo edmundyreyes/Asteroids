@@ -1,5 +1,5 @@
 #pragma once
-struct Vector2;
+#include "Vector2.hpp"
 struct Vector3
 {
 	/// static /////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-#include "Vector2.h"
+#include "Vector2.hpp"
 #include <cmath>
 using namespace std;
 
@@ -25,14 +25,14 @@ float Vector2::SquaredLength() {
 }
 float Vector2::Normalize() { 
 	Length();
-	//se invierte el valor de lenght para asi multiplicar y 
-	//acortar el work del cpu
+	// we get inverse Scale so we can multiply it to the factors this reducces the work for the cpu
 	float inverseScale = 1.0 / length;
 	x *= inverseScale;
 	y *= inverseScale;
 
 	return length;
 }
+////////////////////// OPERATORS //////////////////////////////////////////////////////////////////////////////
 Vector2& Vector2::operator=(const Vector2& rhs) {
 	if (this == &rhs) return *this;
 	x = rhs.x;
@@ -73,9 +73,9 @@ Vector2 Vector2::operator*(const Vector2& rhs) {
 	return Vector2(x * rhs.x, y * rhs.y);
 }
 Vector2 Vector2::operator/(const Vector2& rhs) {
-	// si es 0; el divisor
-	if (rhs.x == 0) throw " no se divide por 0";
-	if (rhs.y == 0) throw " no se divide por 0";
+	// we get inverse Scale so we can multiply it to the factors this reducces the work for the cpu
+	if (rhs.x == 0) throw "we cant divide by 0";
+	if (rhs.y == 0) throw "we cant divide by 0";
 	
 	return Vector2(x / rhs.x, y / rhs.y);
 }

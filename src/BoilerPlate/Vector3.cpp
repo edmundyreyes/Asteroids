@@ -1,7 +1,5 @@
-#include "Vector3.h"
+#include "Vector3.hpp"
 #include<cmath>
-#include "Vector2.h"
-
 
 Vector3 Vector3::Origin = Vector3();
 

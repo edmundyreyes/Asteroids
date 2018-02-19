@@ -1,9 +1,10 @@
 #include "App.hpp"
+#include "colorPalet.hpp"
+#include "Player.hpp"
+#include "Asteroids.hpp"
+
 #include <iostream>
 #include <algorithm>
-#include "colorPalet.hpp"
-#include "Player.h"
-
 #include <GL/glew.h>
 #include <SDL2/SDL_opengl.h>
 
@@ -12,7 +13,8 @@ namespace Engine
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
 
-	Player jugadorUno = Player(0);
+	Player m_playerUno   = Player();
+	Asteroids m_asteroid = Asteroids();
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -22,6 +24,7 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
+		m_playerUno.Update(width, height);
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 	}
@@ -87,27 +90,16 @@ namespace Engine
 			OnExit();
 			break;
 		case SDL_SCANCODE_UP:
-			jugadorUno.Move( 0 , 10 );
-			jugadorUno.trushterBool = true;
-			jugadorUno.renderThruster();
+			m_playerUno.moveForward();
+			m_playerUno.trushterBool = true;
 			SDL_Log("UP was pressed.", keyBoardEvent.keysym.scancode);
 			break;
-		case SDL_SCANCODE_DOWN:
-			jugadorUno.Move( 0 , -10);
-			jugadorUno.trushterBool = false;
-			jugadorUno.renderThruster();
-			SDL_Log("DOWN was pressed.", keyBoardEvent.keysym.scancode);
-			break;
 		case SDL_SCANCODE_LEFT:
-			jugadorUno.Move(-10 , 0);
-			jugadorUno.trushterBool = false;
-			jugadorUno.renderThruster();
+			m_playerUno.rotateLeft();
 			SDL_Log("LEFT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_RIGHT:
-			jugadorUno.Move(10,0);
-			jugadorUno.trushterBool = false;
-			jugadorUno.renderThruster();
+			m_playerUno.rotateRight();
 			SDL_Log("RIGHT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		default:
@@ -123,6 +115,11 @@ namespace Engine
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
 			break;
+
+		case SDL_SCANCODE_UP:
+			m_playerUno.trushterBool = false;
+			break;
+
 		default:
 			//do nothing
 			break;
@@ -134,6 +131,7 @@ namespace Engine
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
+		//
 		//
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
@@ -154,11 +152,13 @@ namespace Engine
 
 	void App::Render()
 	{
-		//            r      g    y		b
-		glClearColor(0.0, 0.50f, 0.50f, 1.0f);
+		//            r      g    b		a
+		glClearColor(0.10, 0.15f, 0.40f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		jugadorUno.renderPlayer();
-		jugadorUno.renderThruster();
+
+		m_playerUno.renderPlayer();
+		m_asteroid.E_Render();
+
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
 
@@ -257,7 +257,7 @@ namespace Engine
 		//
 		m_width = width;
 		m_height = height;
-
+		m_playerUno.Update(width, height);
 		SetupViewport();
 	}
 

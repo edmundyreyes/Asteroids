@@ -4,21 +4,23 @@ using namespace std;
 class MathUtilities
 {
 public:
+	///// constructores /////////////////////////////////////////
+
 	MathUtilities();
-	~MathUtilities();
-	int floatToInt(float num);
-	int floatToEven(float num);
-
-	float clamp(float num, int min, int max);
-
-	float degreesToRadians(int angle);
-	int radiansToDegrees(float radian);
-
-	int radiansDistance(float radianA, float radianB); // me falta esto
-	int angularDistance(int angleA, int angleB);
 	
-	bool isAPowerOfTwo(int num);
-	float interpolate(float start, float end, float target);
+	///// Funciones ///////////////////////////////////////////////
+	
+	int floatToInt					 (float );
+	int floatToEven					 (float );
+	float clamp			 (float , int , int );
+	float degreesToRadians			  ( int );
+	int radiansToDegrees			( float );
+	int radiansDistance		( float , float );
+	int angularDistance			( int , int );
+	bool isAPowerOfTwo				  ( int );
+	float interpolate(float , float , float );
+
+	///  Funciones con Templates  ////////////////////////////////////////////////
 
 	template <class data>
 	data getMin(data num1, data num2) {
@@ -98,5 +100,9 @@ public:
 			}
 		}
 	}
+
+	//// miembros /////////////////////////////////////////////////
+	
+	static float PI;
 };
 

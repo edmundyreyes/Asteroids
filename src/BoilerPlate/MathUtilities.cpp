@@ -2,11 +2,11 @@
 #include "Math.h"
 using namespace std;
 
-MathUtilities::MathUtilities()
-{
+MathUtilities::MathUtilities(){
 }
-MathUtilities::~MathUtilities()
-{}
+
+float MathUtilities::PI = 3.14159226;
+
 int MathUtilities::floatToInt(float x){
 	int y = 0;
 	y = round(x);

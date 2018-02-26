@@ -34,8 +34,7 @@ float Vector4::SquaredLength() {
 }
 float Vector4::Normalize() {
 	Length();
-	//se invierte el valor de lenght para asi multiplicar y 
-	//acortar el work del cpu
+	// we get inverse Scale so we can multiply it to the factors this reducces the work for the cpu
 	float inverseScale = 1.0 / length;
 	x *= inverseScale;
 	y *= inverseScale;
@@ -44,7 +43,7 @@ float Vector4::Normalize() {
 
 	return length;
 }
-/////////////////////////////////////////////
+////////////////////// OPERATORS //////////////////////////////////////////////////////////////////////////////
 Vector4& Vector4::operator=(const Vector4& rhs) {
 	if (this == &rhs) return *this;
 	x = rhs.x;

@@ -1,21 +1,11 @@
 #include "App.hpp"
-#include "colorPalet.hpp"
-#include "Player.hpp"
-#include "Asteroids.hpp"
-
-#include <iostream>
-#include <algorithm>
-#include <GL/glew.h>
-#include <SDL2/SDL_opengl.h>
 
 namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
 
-	Player m_playerUno   = Player();
-	Asteroids m_asteroid = Asteroids();
-
+	
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
 		, m_width(width)
@@ -24,7 +14,15 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
-		m_playerUno.Update(width, height);
+		playerONE  = Player(m_width, m_height);
+
+		asteroidSmall = Asteroids(Asteroids::SMALL_SIZE, m_width, m_height);
+		asteroidMid   = Asteroids(Asteroids::MEDIUM_SIZE, m_width, m_height);
+		asteroidBig   = Asteroids(Asteroids::BIG_SIZE, m_width, m_height);
+
+		gameUtility = Game();
+		gameUtility.StartUpRoutine(asteroidBig);
+
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 	}
@@ -89,19 +87,62 @@ namespace Engine
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
 			break;
+		
+		// Move forward with "W" key or with "UP" key
+		
 		case SDL_SCANCODE_UP:
-			m_playerUno.moveForward();
-			m_playerUno.trushterBool = true;
+			playerONE.MoveForward();
 			SDL_Log("UP was pressed.", keyBoardEvent.keysym.scancode);
 			break;
+		case SDL_SCANCODE_W:
+			playerONE.MoveForward();
+			SDL_Log("W was pressed.", keyBoardEvent.keysym.scancode);
+			break;
+
+		// ROTATE ship with "A" key or "LEFT" key
+
 		case SDL_SCANCODE_LEFT:
-			m_playerUno.rotateLeft();
+			playerONE.RotateLeft();
 			SDL_Log("LEFT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
+		case SDL_SCANCODE_A:
+			playerONE.RotateLeft();
+			SDL_Log("A was pressed.", keyBoardEvent.keysym.scancode);
+			break;
+
+		// ROTATE ship with "D" key or "RIGHT" key
+
 		case SDL_SCANCODE_RIGHT:
-			m_playerUno.rotateRight();
+			playerONE.RotateRight();
 			SDL_Log("RIGHT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
+		case SDL_SCANCODE_D:
+			playerONE.RotateRight();
+			SDL_Log("D was pressed.", keyBoardEvent.keysym.scancode);
+			break;
+
+		// Creating diferent asteroids with "U, I, O" keys
+
+		case SDL_SCANCODE_U:
+			gameUtility.CreateNewAsteroid(asteroidSmall);
+			cout << "Render a small Asteroid" << endl;
+			break;
+		case SDL_SCANCODE_I:
+			gameUtility.CreateNewAsteroid(asteroidMid);
+			cout << "Render a midium Asteroid" << endl;
+			break;
+		case SDL_SCANCODE_O:
+			gameUtility.CreateNewAsteroid(asteroidBig);
+			cout << "Render a big Asteroid" << endl;
+			break;
+
+		// deleting diferent asteroids with "j"
+		
+		case SDL_SCANCODE_J:
+			gameUtility.DeleteAsteroid();
+			cout << "erase a Asteroid" << endl;
+			break;
+		
 		default:
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
 			break;
@@ -113,11 +154,17 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_ESCAPE:
+			playerONE.ToggleMove();
 			OnExit();
 			break;
 
 		case SDL_SCANCODE_UP:
-			m_playerUno.trushterBool = false;
+			playerONE.trushterBool = false;
+			break;
+
+		case SDL_SCANCODE_P:
+			gameUtility.ToggleDebuggTool();
+			
 			break;
 
 		default:
@@ -131,7 +178,9 @@ namespace Engine
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
-		//
+		playerONE.Update( DESIRED_FRAME_TIME);
+		gameUtility.UpdateGalaxy(DESIRED_FRAME_TIME);
+
 		//
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
@@ -156,8 +205,16 @@ namespace Engine
 		glClearColor(0.10, 0.15f, 0.40f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		m_playerUno.renderPlayer();
-		m_asteroid.E_Render();
+		playerONE.Render();
+		gameUtility.RenderGalaxy();
+		
+		if (gameUtility.deBuggtool) { //if the debug tool is on.
+			playerONE.DrawHollowCircle();
+			gameUtility.DrawAsteroidCircles();
+			for (int i = 0; i < gameUtility.Galaxy.size(); i++)
+				gameUtility.RenderLines(playerONE, gameUtility.Galaxy[i]);
+
+		}
 
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
@@ -165,13 +222,13 @@ namespace Engine
 	bool App::SDLInit()
 	{
 		// Initialize SDL's Video subsystem
-		//
+
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		{
 			std::cerr << "Failed to init SDL" << std::endl;
 			return false;
 		}
-
+		
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
@@ -257,7 +314,6 @@ namespace Engine
 		//
 		m_width = width;
 		m_height = height;
-		m_playerUno.Update(width, height);
 		SetupViewport();
 	}
 

@@ -1,7 +1,6 @@
 #pragma once
-#include "Vector4.hpp"
 #include "Entity.hpp"
-#include <vector>
+
 struct Asteroids : public Entity {
 	// Size Options ////////////////////////////////////////////
 	enum Asteroid_Size {
@@ -12,18 +11,25 @@ struct Asteroids : public Entity {
 	/// static /////////////////////////////////////////////////
 	
 	/// construc. //////////////////////////////////////////
-
-	Asteroids		  ( void );
-	Asteroids( Asteroid_Size );
+	Asteroids(void);
+	Asteroids(float , float );
+	Asteroids( Asteroid_Size, float, float );
 
 	/// functions //////////////////////////////////////////////
 
-	void Asteroid_Update	(void);
+	void Update	(float);
+	void Render (void);
 	int  Asteroid_GetSize   (void);
 	void PushDrawEntity		(void);
+	void ApplyImpulse(Vector2) override;
+	void MoveForward		(void);
 
 	/// members ///////////////////////////////////////////////
+	
 	int asteroid_Size;
+	float mass;
+	float angle;
+	bool moving;
 	
 };
 

@@ -5,10 +5,18 @@
 // C++ STL
 #include <string>
 #include <list>
+#include <iostream>
+#include <algorithm>
+#include <GL/glew.h>
+#include <SDL2/SDL_opengl.h>
 
 // Asteroids
+#include "Game.hpp"
 #include "SDLEvent.hpp"
 #include "TimeManager.hpp"
+#include "Player.hpp"
+#include "Asteroids.hpp"
+#include "colorPalet.hpp"
 
 namespace Engine
 {
@@ -66,6 +74,12 @@ namespace Engine
 		SDL_GLContext						m_context;
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
+
+		Player								playerONE;
+		Asteroids							asteroidSmall;
+		Asteroids							asteroidMid;
+		Asteroids							asteroidBig;
+		Game								gameUtility;
 
 	};
 }

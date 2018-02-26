@@ -1,13 +1,7 @@
 #pragma once
-#include "Vector2.hpp"
-#include "MathUtilities.hpp"
 #include "Entity.hpp"
+#include "Asteroids.hpp"
 
-// Externals
-#include <GL/glew.h>
-#include <cmath>
-#include <SDL2/SDL_opengl.h>
-#include <vector>
 
 struct Player : public Entity {
 	/// static /////////////////////////////////////////////////
@@ -18,19 +12,23 @@ struct Player : public Entity {
 
 	Player();
 	Player(float , float );
-	Player(Vector2);
 
 	/// functions //////////////////////////////////////////////
 	
-	void renderPlayer(void);
-	void moveForward(void);
-	void rotateLeft(void);
-	void rotateRight(void);
-	void Update(float, float);
+	void Render(void) override;
+	void MoveForward(void);
+	void RotateLeft(void);
+	void RotateRight(void);
+
+	void Update( float );
 	void PushDrawEntity(void);
 	void PushDrawThruster(void);
 	void DrawThruster(void);
 
+	void ApplyImpulse(Vector2) override;
+	inline void ToggleMove() { moving = !moving; }
+	
+	
 	/// members ///////////////////////////////////////////////
 
 	float mass;
@@ -38,6 +36,9 @@ struct Player : public Entity {
 	int screenWidth;
 	int screenHeight;
 	bool trushterBool;
-	std::vector <Vector2> pointsThruster;
 	
+	std::vector <Vector2> pointsThruster;
+
+	bool moving;
+	float currentSpeed;
 };

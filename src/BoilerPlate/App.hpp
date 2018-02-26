@@ -16,7 +16,7 @@
 #include "TimeManager.hpp"
 #include "Player.hpp"
 #include "Asteroids.hpp"
-#include "colorPalet.hpp"
+#include "ColorPalet.hpp"
 
 namespace Engine
 {
@@ -75,11 +75,12 @@ namespace Engine
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
 
-		Player								playerONE;
+		Player								m_playerONE;
 		Asteroids							asteroidSmall;
 		Asteroids							asteroidMid;
 		Asteroids							asteroidBig;
 		Game								gameUtility;
+		Bullet								antiAsteroidsBullet;
 
 	};
 }

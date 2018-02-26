@@ -22,7 +22,7 @@ struct Asteroids : public Entity {
 	int  Asteroid_GetSize   (void);
 	void PushDrawEntity		(void);
 	void ApplyImpulse(Vector2) override;
-	void MoveForward		(void);
+	
 
 	/// members ///////////////////////////////////////////////
 	

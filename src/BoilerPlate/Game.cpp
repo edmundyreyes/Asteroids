@@ -10,9 +10,20 @@ void Game::RenderGalaxy() {
 		Galaxy[i].Render();
 	}
 }
+void Game::RenderMagazine() {
+	for (int i = 0; i < Magazine.size(); i++) {
+		
+		Magazine[i].Render();
+	}
+}
 void Game::UpdateGalaxy(float DT) {
 	for (int i = 0 ; i < Galaxy.size() ; i++) {
 		Galaxy[i].Update(DT);
+	}
+}
+void Game::UpdateMagazine(float DT) {
+	for (int i = 0; i < Magazine.size(); i++) {
+		Magazine[i].Update(DT);
 	}
 }
 void Game::DrawAsteroidCircles() {
@@ -20,13 +31,23 @@ void Game::DrawAsteroidCircles() {
 		Galaxy[i].DrawHollowCircle();
 	}
 }
-
-void Game::CreateNewAsteroid(Asteroids rock) {
+void Game::DrawBulletCircle() {
+	for (int i = 0; i < Magazine.size(); i++) {
+		Magazine[i].DrawHollowCircle();
+	}
+}
+void Game::CreateNewAsteroid(float m_width,float m_height) {
 	if(deBuggtool){
+		Asteroids rock = Asteroids(m_width, m_height);
 		rock.angle = rand() % FULLCIRCLE;
 		rock.position = Vector2(rand(), rand());
 		Galaxy.push_back(rock);
 	}
+}
+void Game::ShootNewBullet(Player ship) {
+	Bullet bulletCasket = Bullet(ship);
+	Magazine.push_back(bulletCasket);
+	
 }
 void Game::DeleteAsteroid() {
 	if (Galaxy.size() > 0){
@@ -51,7 +72,8 @@ bool Game::DetectColision(Entity player, Entity asteroid) {
 		return false;
 
 }
-void Game::StartUpRoutine(Asteroids rock) {
+void Game::StartUpRoutine(float m_width,float m_height) {
+	Asteroids rock = Asteroids(m_width, m_height);
 	for (int i = 0; i < 4; i++) {
 		rock.angle = rand() % FULLCIRCLE;
 		rock.position = Vector2(rand(), rand());

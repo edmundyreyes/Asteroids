@@ -7,7 +7,7 @@ Asteroids::Asteroids() {}
 Asteroids::Asteroids(float width,float height):
 	Entity(width,height) {
 
-	asteroid_Size = 1;
+	asteroid_Size = 3;
 	angle = 0;
 	PushDrawEntity();
 	mass = asteroid_Size;
@@ -30,7 +30,7 @@ int Asteroids::Asteroid_GetSize() {
 }
 
 void Asteroids::Update( float DT ) {
-	MoveForward();
+	ApplyImpulse(Vector2(SPACE_MAGIC, SPACE_MAGIC));
 	Entity::Update(DT);
 	float speed = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
 	MathUtilities math;
@@ -62,12 +62,7 @@ void Asteroids::ApplyImpulse(Vector2 vecImpulse) {
 	velocity.y += (vecImpulse.y / mass) * sin(math.degreesToRadians(angle));
 
 }
-void Asteroids::MoveForward() {
 
-	moving = true;
-	ApplyImpulse(Vector2(SPACE_MAGIC, SPACE_MAGIC));
-
-}
 void Asteroids::Render() {
 	glLoadIdentity();
 	glTranslatef(position.x, position.y, 0.0f);

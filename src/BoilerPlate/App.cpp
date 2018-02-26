@@ -14,14 +14,11 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
-		playerONE  = Player(m_width, m_height);
-
-		asteroidSmall = Asteroids(Asteroids::SMALL_SIZE, m_width, m_height);
-		asteroidMid   = Asteroids(Asteroids::MEDIUM_SIZE, m_width, m_height);
-		asteroidBig   = Asteroids(Asteroids::BIG_SIZE, m_width, m_height);
+		m_playerONE  = Player(m_width, m_height);
+		antiAsteroidsBullet = Bullet(m_playerONE);
 
 		gameUtility = Game();
-		gameUtility.StartUpRoutine(asteroidBig);
+		gameUtility.StartUpRoutine(m_width, m_height);
 
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
@@ -91,51 +88,43 @@ namespace Engine
 		// Move forward with "W" key or with "UP" key
 		
 		case SDL_SCANCODE_UP:
-			playerONE.MoveForward();
+			m_playerONE.MoveForward();
 			SDL_Log("UP was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_W:
-			playerONE.MoveForward();
+			m_playerONE.MoveForward();
 			SDL_Log("W was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 
 		// ROTATE ship with "A" key or "LEFT" key
 
 		case SDL_SCANCODE_LEFT:
-			playerONE.RotateLeft();
+			m_playerONE.RotateLeft();
 			SDL_Log("LEFT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_A:
-			playerONE.RotateLeft();
+			m_playerONE.RotateLeft();
 			SDL_Log("A was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 
 		// ROTATE ship with "D" key or "RIGHT" key
 
 		case SDL_SCANCODE_RIGHT:
-			playerONE.RotateRight();
+			m_playerONE.RotateRight();
 			SDL_Log("RIGHT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_D:
-			playerONE.RotateRight();
+			m_playerONE.RotateRight();
 			SDL_Log("D was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 
-		// Creating diferent asteroids with "U, I, O" keys
+		// Creating asteroids with "U" key
 
 		case SDL_SCANCODE_U:
-			gameUtility.CreateNewAsteroid(asteroidSmall);
-			cout << "Render a small Asteroid" << endl;
+			gameUtility.CreateNewAsteroid(m_width, m_height);
+			cout << "Render a Asteroid" << endl;
 			break;
-		case SDL_SCANCODE_I:
-			gameUtility.CreateNewAsteroid(asteroidMid);
-			cout << "Render a midium Asteroid" << endl;
-			break;
-		case SDL_SCANCODE_O:
-			gameUtility.CreateNewAsteroid(asteroidBig);
-			cout << "Render a big Asteroid" << endl;
-			break;
-
+		
 		// deleting diferent asteroids with "j"
 		
 		case SDL_SCANCODE_J:
@@ -154,19 +143,20 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_ESCAPE:
-			playerONE.ToggleMove();
+			m_playerONE.ToggleMove();
 			OnExit();
 			break;
 
 		case SDL_SCANCODE_UP:
-			playerONE.trushterBool = false;
+			m_playerONE.trushterBool = false;
 			break;
 
 		case SDL_SCANCODE_P:
 			gameUtility.ToggleDebuggTool();
-			
 			break;
-
+		case SDL_SCANCODE_SPACE:
+			gameUtility.ShootNewBullet(m_playerONE);
+			break;
 		default:
 			//do nothing
 			break;
@@ -178,8 +168,9 @@ namespace Engine
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
-		playerONE.Update( DESIRED_FRAME_TIME);
+		m_playerONE.Update( DESIRED_FRAME_TIME);
 		gameUtility.UpdateGalaxy(DESIRED_FRAME_TIME);
+		gameUtility.UpdateMagazine(DESIRED_FRAME_TIME);
 
 		//
 
@@ -205,15 +196,17 @@ namespace Engine
 		glClearColor(0.10, 0.15f, 0.40f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		playerONE.Render();
+		m_playerONE.Render();
 		gameUtility.RenderGalaxy();
+		gameUtility.RenderMagazine();
 		
 		if (gameUtility.deBuggtool) { //if the debug tool is on.
-			playerONE.DrawHollowCircle();
 			gameUtility.DrawAsteroidCircles();
+			m_playerONE.DrawHollowCircle();
+			gameUtility.DrawBulletCircle();
 			for (int i = 0; i < gameUtility.Galaxy.size(); i++)
-				gameUtility.RenderLines(playerONE, gameUtility.Galaxy[i]);
-
+				gameUtility.RenderLines(m_playerONE, gameUtility.Galaxy[i]);
+			//TODO: draw render lines of bullets
 		}
 
 		SDL_GL_SwapWindow(m_mainWindow);

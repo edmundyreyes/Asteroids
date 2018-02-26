@@ -172,21 +172,37 @@ copy /Y "$(SolutionDir)\Externals\SDL2-2.0.4\lib\x64\SDL2.dll" "$(TargetDir)SDL2
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Asteroids.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="colorPalet.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtilities.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SDLEvent.cpp" />
     <ClCompile Include="stb_image.c" />
     <ClCompile Include="TimeManager.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Vector4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
+    <ClInclude Include="Asteroids.hpp" />
+    <ClInclude Include="Bullet.hpp" />
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="ColorPalet.hpp" />
+    <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="Game.hpp" />
     <ClInclude Include="MathUtilities.hpp" />
+    <ClInclude Include="Player.hpp" />
     <ClInclude Include="SDLEvent.hpp" />
     <ClInclude Include="TimeManager.hpp" />
+    <ClInclude Include="Vector2.hpp" />
+    <ClInclude Include="Vector3.hpp" />
+    <ClInclude Include="Vector4.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

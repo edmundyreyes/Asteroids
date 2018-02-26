@@ -2,11 +2,11 @@
 #include "Math.h"
 using namespace std;
 
-MathUtilities::MathUtilities()
-{
+MathUtilities::MathUtilities(){
 }
-MathUtilities::~MathUtilities()
-{}
+
+float MathUtilities::PI = 3.14159226;
+
 int MathUtilities::floatToInt(float x){
 	int y = 0;
 	y = round(x);
@@ -19,9 +19,7 @@ int MathUtilities::floatToEven(float x) {
 	return y;
 }
 float MathUtilities::clamp(float num, int min, int max) {
-	if (num < min) num = min;
-	else if (num > max) num = max;
-	return num;
+	return (num / min) * max;
 }
 
 float MathUtilities::degreesToRadians(int angle) {

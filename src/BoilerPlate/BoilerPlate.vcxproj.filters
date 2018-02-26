@@ -9,6 +9,14 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="colorPalet.cpp" />
     <ClCompile Include="MathUtilities.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Vector4.cpp" />
+    <ClCompile Include="Asteroids.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Bullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
@@ -17,6 +25,14 @@
     <ClInclude Include="Color.hpp" />
     <ClInclude Include="ColorPalet.hpp" />
     <ClInclude Include="MathUtilities.hpp" />
+    <ClInclude Include="Asteroids.hpp" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Vector2.hpp" />
+    <ClInclude Include="Vector3.hpp" />
+    <ClInclude Include="Vector4.hpp" />
+    <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Bullet.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

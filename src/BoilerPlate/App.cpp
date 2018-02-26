@@ -1,17 +1,11 @@
 #include "App.hpp"
-#include <iostream>
-#include <algorithm>
-#include "colorPalet.hpp"
-
-#include <GL/glew.h>
-#include <SDL2/SDL_opengl.h>
 
 namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
-	double ejeXp = 25.0, ejeXn = -25.0, ejeYp = 25.00, ejeYn = -25.00;
 
+	
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
 		, m_width(width)
@@ -20,6 +14,12 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
+		m_playerONE  = Player(m_width, m_height);
+		antiAsteroidsBullet = Bullet(m_playerONE);
+
+		gameUtility = Game();
+		gameUtility.StartUpRoutine(m_width, m_height);
+
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 	}
@@ -84,22 +84,54 @@ namespace Engine
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
 			break;
+		
+		// Move forward with "W" key or with "UP" key
+		
 		case SDL_SCANCODE_UP:
-			ejeYp += 10;
-			ejeYn += 10;
+			m_playerONE.MoveForward();
+			SDL_Log("UP was pressed.", keyBoardEvent.keysym.scancode);
 			break;
-		case SDL_SCANCODE_DOWN:
-			ejeYn -= 10;
-			ejeYp -= 10;
+		case SDL_SCANCODE_W:
+			m_playerONE.MoveForward();
+			SDL_Log("W was pressed.", keyBoardEvent.keysym.scancode);
 			break;
+
+		// ROTATE ship with "A" key or "LEFT" key
+
 		case SDL_SCANCODE_LEFT:
-			ejeXn -= 10;
-			ejeXp -= 10;
+			m_playerONE.RotateLeft();
+			SDL_Log("LEFT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
+		case SDL_SCANCODE_A:
+			m_playerONE.RotateLeft();
+			SDL_Log("A was pressed.", keyBoardEvent.keysym.scancode);
+			break;
+
+		// ROTATE ship with "D" key or "RIGHT" key
+
 		case SDL_SCANCODE_RIGHT:
-			ejeXn += 10;
-			ejeXp += 10;
+			m_playerONE.RotateRight();
+			SDL_Log("RIGHT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
+		case SDL_SCANCODE_D:
+			m_playerONE.RotateRight();
+			SDL_Log("D was pressed.", keyBoardEvent.keysym.scancode);
+			break;
+
+		// Creating asteroids with "U" key
+
+		case SDL_SCANCODE_U:
+			gameUtility.CreateNewAsteroid(m_width, m_height);
+			cout << "Render a Asteroid" << endl;
+			break;
+		
+		// deleting diferent asteroids with "j"
+		
+		case SDL_SCANCODE_J:
+			gameUtility.DeleteAsteroid();
+			cout << "erase a Asteroid" << endl;
+			break;
+		
 		default:
 			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
 			break;
@@ -111,7 +143,19 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_ESCAPE:
+			m_playerONE.ToggleMove();
 			OnExit();
+			break;
+
+		case SDL_SCANCODE_UP:
+			m_playerONE.trushterBool = false;
+			break;
+
+		case SDL_SCANCODE_P:
+			gameUtility.ToggleDebuggTool();
+			break;
+		case SDL_SCANCODE_SPACE:
+			gameUtility.ShootNewBullet(m_playerONE);
 			break;
 		default:
 			//do nothing
@@ -124,6 +168,10 @@ namespace Engine
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
+		m_playerONE.Update( DESIRED_FRAME_TIME);
+		gameUtility.UpdateGalaxy(DESIRED_FRAME_TIME);
+		gameUtility.UpdateMagazine(DESIRED_FRAME_TIME);
+
 		//
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
@@ -144,17 +192,22 @@ namespace Engine
 
 	void App::Render()
 	{
-		//            r      g    y		b
-		glClearColor(0.0, 0.50f, 0.50f, 1.0f);
+		//            r      g    b		a
+		glClearColor(0.10, 0.15f, 0.40f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBegin(GL_LINE_LOOP);
-		glColor3f(1.0f, 0.55f, 0.50f);
-		glVertex2f(ejeXp, ejeYp);
-		glVertex2f(ejeXp, ejeYn);
-		glVertex2f(ejeXn, ejeYp);
-		glVertex2f(ejeXn, ejeYn);
-		glEnd();
+		m_playerONE.Render();
+		gameUtility.RenderGalaxy();
+		gameUtility.RenderMagazine();
+		
+		if (gameUtility.deBuggtool) { //if the debug tool is on.
+			gameUtility.DrawAsteroidCircles();
+			m_playerONE.DrawHollowCircle();
+			gameUtility.DrawBulletCircle();
+			for (int i = 0; i < gameUtility.Galaxy.size(); i++)
+				gameUtility.RenderLines(m_playerONE, gameUtility.Galaxy[i]);
+			//TODO: draw render lines of bullets
+		}
 
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
@@ -162,13 +215,13 @@ namespace Engine
 	bool App::SDLInit()
 	{
 		// Initialize SDL's Video subsystem
-		//
+
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		{
 			std::cerr << "Failed to init SDL" << std::endl;
 			return false;
 		}
-
+		
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
@@ -254,7 +307,6 @@ namespace Engine
 		//
 		m_width = width;
 		m_height = height;
-
 		SetupViewport();
 	}
 

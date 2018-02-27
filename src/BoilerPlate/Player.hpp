@@ -24,10 +24,13 @@ struct Player : public Entity {
 	void PushDrawEntity(void);
 	void PushDrawThruster(void);
 	void DrawThruster(void);
+	bool GetLives(void);
+	void SetLives(int);
+	void Killit(void);
 
 	void ApplyImpulse(Vector2) override;
 	inline void ToggleMove() { moving = !moving; }
-	
+	inline void ToggleLive() { live = !live; }
 	
 	/// members ///////////////////////////////////////////////
 
@@ -36,9 +39,9 @@ struct Player : public Entity {
 	int screenWidth;
 	int screenHeight;
 	bool trushterBool;
-	
 	std::vector <Vector2> pointsThruster;
-
 	bool moving;
 	float currentSpeed;
+protected:
+	bool live;
 };

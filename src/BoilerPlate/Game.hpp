@@ -6,25 +6,34 @@
 struct Game
 {
 	Game(void);
-	void RenderGalaxy( void );
-	void RenderMagazine(void);
-	void UpdateGalaxy( float );
-	void UpdateMagazine(float);
-	void CreateNewAsteroid(float , float);
-	void DrawAsteroidCircles(void);
-	void DrawBulletCircle(void);
-	float CalculateDistance(Entity, Entity);
-	bool DetectColision(Entity, Entity);
-	void DeleteAsteroid(void);
-	void RenderLines(Entity, Entity);
-	void StartUpRoutine(float, float);
-	void ShootNewBullet(Player);
-	inline void ToggleDebuggTool() { deBuggtool = !deBuggtool; }
+	void RenderGalaxy					(void);
+	void RenderMagazine					(void);
+	void DrawAsteroidCircles			(void);
+	void DrawBulletCircle				(void);
+	void Render							(void);
+	void Fps							(void);
+	void DeleteAsteroid					(void);
+	void BulletCollision				(void);
+	void Update							(float);
+	void UpdateGalaxy					(float);
+	void UpdateMagazine					(float);
+	void ShipCollision					(Player);
+	void DebugMode						(Player);
+	void ShootNewBullet					(Player);
+	bool KillBullet						(Bullet);
+	void StartUpRoutine					(float, float);
+	void CreateNewAsteroid				(float, float);
+	float CalculateDistance				(Entity, Entity);
+	bool DetectColision					(Entity, Entity);
+	void RenderLines					(Entity, Entity);
+	inline void ToggleDebuggTool		(void) { debuggTool = !debuggTool; }
 
 
 	// members
 	std::vector<Asteroids> Galaxy;
 	std::vector<Bullet> Magazine;
-	bool deBuggtool;
+	std::vector<float> Framerates;
+	bool debuggTool;
+	int time;
 };
 

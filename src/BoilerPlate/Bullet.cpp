@@ -2,7 +2,7 @@
 const float ORIGIN = 0.0f;
 const float SPACE_MAGIC = 30.0f;
 const float MAX_SPEED = 600.0f;
-const float BULLET_LIFE = 120;
+const float BULLET_LIFE = 80;
 const float BULLET_RADIUS = 5;
 
 Bullet::Bullet() {}
@@ -10,7 +10,6 @@ Bullet::Bullet() {}
 Bullet::Bullet(Player ship):
 	Entity(ship.maxWidth*2, ship.maxHeight*2) 
 {
-
 	bulletAngle = ship.angle;
 	bulletLife = BULLET_LIFE;
 	radius = BULLET_RADIUS;
@@ -36,7 +35,10 @@ void Bullet::Render() {
 int Bullet::Getlife() {
 	return bulletLife;
 }
-	
+bool Bullet::GetisAlive() {
+	return isAlive;
+}
+
 void Bullet::Update(float DT) {
 	bulletLife--;
 	ApplyImpulse(Vector2(SPACE_MAGIC, SPACE_MAGIC));

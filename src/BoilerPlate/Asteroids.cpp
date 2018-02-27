@@ -8,11 +8,12 @@ Asteroids::Asteroids(float width,float height):
 	Entity(width,height) {
 
 	asteroid_Size = 3;
-	angle = 0;
+	angle = 30;
 	PushDrawEntity();
 	mass = asteroid_Size;
-	position = Vector2(rand(),rand());
+	position = Vector2(rand() % 1000, rand() % 1000);
 	velocity = Vector2(0, 0);
+	radius = asteroid_Size * ASTEROID_RADIO;
 }
 Asteroids::Asteroids(Asteroid_Size size, float width, float height):
 	Entity(width, height) {
@@ -20,10 +21,21 @@ Asteroids::Asteroids(Asteroid_Size size, float width, float height):
 	asteroid_Size = size; 
 	mass = asteroid_Size;
 	PushDrawEntity();
-	position = Vector2(0, 0);
+	position = Vector2(rand() % 1000, rand() % 1000);
 	velocity = Vector2(0, 0);
 	radius = asteroid_Size * ASTEROID_RADIO;
 }
+Asteroids::Asteroids(Asteroid_Size size, Asteroids rock) :
+	Entity(rock.maxWidth * 2, rock.maxHeight * 2) {
+	angle = rock.angle + 100;
+	asteroid_Size = size;
+	mass = asteroid_Size;
+	PushDrawEntity();
+	position = Vector2(rock.position.x,rock.position.y);
+	velocity = Vector2(0, 0);
+	radius = asteroid_Size * ASTEROID_RADIO;
+}
+
 
 int Asteroids::Asteroid_GetSize() {
 	return asteroid_Size;

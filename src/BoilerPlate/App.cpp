@@ -168,10 +168,7 @@ namespace Engine
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
-		m_playerONE.Update( DESIRED_FRAME_TIME);
-		gameUtility.UpdateGalaxy(DESIRED_FRAME_TIME);
-		gameUtility.UpdateMagazine(DESIRED_FRAME_TIME);
-
+		
 		//
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
@@ -183,7 +180,12 @@ namespace Engine
 			endTime = m_timer->GetElapsedTimeInSeconds();
 		}
 
-		//double elapsedTime = endTime - startTime;        
+		double elapsedTime = endTime - startTime;
+
+		gameUtility.ShipCollision(m_playerONE);
+		gameUtility.Update(elapsedTime);
+		m_playerONE.Update(elapsedTime);
+
 
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 
@@ -196,18 +198,10 @@ namespace Engine
 		glClearColor(0.10, 0.15f, 0.40f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		m_playerONE.Render();
-		gameUtility.RenderGalaxy();
-		gameUtility.RenderMagazine();
+		if (m_playerONE.GetLives()) m_playerONE.Render();
+		gameUtility.Render();
 		
-		if (gameUtility.deBuggtool) { //if the debug tool is on.
-			gameUtility.DrawAsteroidCircles();
-			m_playerONE.DrawHollowCircle();
-			gameUtility.DrawBulletCircle();
-			for (int i = 0; i < gameUtility.Galaxy.size(); i++)
-				gameUtility.RenderLines(m_playerONE, gameUtility.Galaxy[i]);
-			//TODO: draw render lines of bullets
-		}
+		gameUtility.DebugMode(m_playerONE);
 
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
@@ -307,6 +301,7 @@ namespace Engine
 		//
 		m_width = width;
 		m_height = height;
+
 		SetupViewport();
 	}
 

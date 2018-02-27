@@ -9,10 +9,12 @@ public:
 	void Update(float DT);
 	void ApplyImpulse(Vector2 vecImpulse);
 	int Getlife(void);
+	bool GetisAlive(void);
 
 
 private:
 	float bulletAngle;
 	float bulletLife;
+	bool isAlive;
 
 };

@@ -14,6 +14,7 @@ struct Asteroids : public Entity {
 	Asteroids(void);
 	Asteroids(float , float );
 	Asteroids( Asteroid_Size, float, float );
+	Asteroids(Asteroid_Size, Asteroids);
 
 	/// functions //////////////////////////////////////////////
 

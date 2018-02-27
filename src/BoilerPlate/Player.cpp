@@ -5,7 +5,7 @@ const float MAX_SPEED = 350.0f;
 const float ANGLE_ROTATE = 45.0f;
 const float DRAG_FORCE = 0.991f;
 const float ORIGIN = 0.0f;
-const float SHIPSRADIUS = 17;
+const float SHIPS_RADIUS = 17;
 
 /////// Constructors //////////////////////////////////////////////////////////////////////
 Player::Player() {}
@@ -13,10 +13,11 @@ Player::Player() {}
 Player::Player(float width, float height):
 	Entity(width,height) {
 
+	live = true;
 	trushterBool = false;
 	moving = false;
 	angle  = ORIGIN;
-	radius = SHIPSRADIUS;
+	radius = SHIPS_RADIUS;
 	position = Vector2(ORIGIN, ORIGIN);
 	velocity = Vector2(ORIGIN, ORIGIN);
 	PushDrawEntity();
@@ -65,13 +66,14 @@ void Player::PushDrawThruster() {
 /////// Others  //////////////////////////////////////////////////////////////////////
 
 void Player::Update(float DT) {
+	
 	if (!moving) trushterBool = false;
 	float speed = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
 
 	MathUtilities math;
 
 	if (speed > MAX_SPEED) {
-	
+
 		velocity.x = math.clamp(velocity.x, speed, MAX_SPEED);
 		velocity.y = math.clamp(velocity.y, speed, MAX_SPEED);
 		speed = MAX_SPEED;
@@ -83,7 +85,6 @@ void Player::Update(float DT) {
 	currentSpeed = speed;
 
 	Entity::Update(DT);
-
 }
 void Player::PushDrawEntity() {
 	pointsContainer.push_back(Vector2(0, 20));
@@ -99,4 +100,13 @@ void Player::Render() {
 
 	DrawEntity();
 	DrawThruster();
+}
+bool Player::GetLives() {
+	return live;
+}
+void Player::SetLives(int newlives) {
+	live = newlives;
+}
+void Player::Killit() {
+	live = false;
 }

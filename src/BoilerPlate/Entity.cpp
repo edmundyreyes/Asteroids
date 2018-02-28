@@ -37,7 +37,8 @@ void Entity::Update( float DT){
 }
 
 void Entity::DrawEntity() {
-	glBegin(GL_LINE_LOOP);
+	glColor3f(1, 1, 1);
+	glBegin(GL_POLYGON);
 	for (int i = 0; i < pointsContainer.size(); i++) {
 		glVertex2f(pointsContainer[i].x, pointsContainer[i].y);
 	}

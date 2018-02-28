@@ -27,7 +27,7 @@ Asteroids::Asteroids(Asteroid_Size size, float width, float height):
 }
 Asteroids::Asteroids(Asteroid_Size size, Asteroids rock) :
 	Entity(rock.maxWidth * 2, rock.maxHeight * 2) {
-	angle = rock.angle + 100;
+	angle = rock.angle + rand() % 360;
 	asteroid_Size = size;
 	mass = asteroid_Size;
 	PushDrawEntity();
@@ -42,6 +42,7 @@ int Asteroids::Asteroid_GetSize() {
 }
 
 void Asteroids::Update( float DT ) {
+	angle += DT;
 	ApplyImpulse(Vector2(SPACE_MAGIC, SPACE_MAGIC));
 	Entity::Update(DT);
 	float speed = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
@@ -63,7 +64,7 @@ void Asteroids::PushDrawEntity() {
 	pointsContainer.push_back(Vector2( 26 * size,-21 * size));//d
 	pointsContainer.push_back(Vector2( 9  * size, -20 * size));//e
 	pointsContainer.push_back(Vector2(-10 * size,-30 * size));//f
-	pointsContainer.push_back(Vector2( -8 * size, -8 * size));//g
+	pointsContainer.push_back(Vector2( -18 * size, -18 * size));//g
 	pointsContainer.push_back(Vector2(-20 * size, -14 * size));//i
 	pointsContainer.push_back(Vector2(-33 * size,-10 * size));//t
 }

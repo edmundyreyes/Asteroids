@@ -2,7 +2,7 @@
 
 const float THRUST = 60.0f;
 const float MAX_SPEED = 350.0f;
-const float ANGLE_ROTATE = 45.0f;
+const float ANGLE_ROTATE = 10.0f;
 const float DRAG_FORCE = 0.991f;
 const float ORIGIN = 0.0f;
 const float SHIPS_RADIUS = 17;
@@ -51,6 +51,7 @@ void Player::MoveForward() {
 
 void Player::DrawThruster() {
 	if (trushterBool) {
+		glColor3f(1, 0, 0);
 		glBegin(GL_LINE_LOOP);
 		for (int i = 0; i < pointsThruster.size(); i++) {
 			glVertex2f(pointsThruster[i].x, pointsThruster[i].y);

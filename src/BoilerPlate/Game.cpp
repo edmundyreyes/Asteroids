@@ -3,10 +3,12 @@
 const int SHIP_PERSONAL_SPACE = 200;
 const int FULLCIRCLE = 360;
 const int TIME_MAX = 250;
+int currentIndex = 0;
 
 Game::Game(){
 	debuggTool = false;
-	Framerates = std::vector <float>(300);
+	Framerates = std::vector <float>(300); 
+
 }
 void Game::RenderGalaxy() {
 	for (int i = 0; i < Galaxy.size(); i++) {
@@ -107,58 +109,51 @@ void Game::BulletCollision() {
 	
 	if (!debuggTool) 
 	{
-		
-		bool collision = false;
+
+		vector <Asteroids> currentAsteroids;
 		for (int i = 0; i < Galaxy.size(); i++)
 		{
-			for (int j = 0; j < Magazine.size(); j++)
-			{
-				if (DetectColision(Galaxy[i], Magazine[j]))
-				{
-				
-					if (Galaxy[i].Asteroid_GetSize() == Asteroids::BIG_SIZE) {
-						Galaxy.push_back(Asteroids(Asteroids::MEDIUM_SIZE, Galaxy[i]));
-						Galaxy.push_back(Asteroids(Asteroids::MEDIUM_SIZE, Galaxy[i]));
-						Galaxy.erase(Galaxy.begin() + i);
-						Magazine.erase(Magazine.begin() + j);
-						collision = true;
-						
-					}
-					else if (Galaxy[i].Asteroid_GetSize() == Asteroids::MEDIUM_SIZE) {
-						Galaxy.push_back(Asteroids(Asteroids::SMALL_SIZE, Galaxy[i]));
-						Galaxy.push_back(Asteroids(Asteroids::SMALL_SIZE, Galaxy[i]));
-						Galaxy.erase(Galaxy.begin() + i);
-						Magazine.erase(Magazine.begin() + j);
-						collision = true;
-					}
-					else {
-						Galaxy.erase(Galaxy.begin() + i);
-						Magazine.erase(Magazine.begin() + j);
-						collision = true;
-					}
+			if (CheckCollisionWithMagazine(Galaxy[i])) {
+				if (Galaxy[i].Asteroid_GetSize() == Asteroids::BIG_SIZE) {
+					currentAsteroids.push_back(Asteroids(Asteroids::MEDIUM_SIZE, Galaxy[i]));
+					currentAsteroids.push_back(Asteroids(Asteroids::MEDIUM_SIZE, Galaxy[i]));
 				}
-				break;
+				else if (Galaxy[i].Asteroid_GetSize() == Asteroids::MEDIUM_SIZE) {
+					currentAsteroids.push_back(Asteroids(Asteroids::SMALL_SIZE, Galaxy[i]));
+					currentAsteroids.push_back(Asteroids(Asteroids::SMALL_SIZE, Galaxy[i]));
+				}
 			}
-			if (collision) break;
+			else currentAsteroids.push_back(Galaxy[i]); 
 		}
+		Galaxy = currentAsteroids;
 	}
 }
-void Game::ShipCollision(Player ship) {
+bool Game::CheckCollisionWithMagazine(Asteroids temp)
+{
+	vector <Bullet> currentBullets;
+	bool collision = false;
+	for (int i = 0; i < Magazine.size(); i++)
+	{
+		if (DetectColision(temp, Magazine[i])) collision = true;
+		else currentBullets.push_back(Magazine[i]);
+	}
+	Magazine = currentBullets;
+	return collision;
+}
 
+void Game::ShipCollision(Player ship) {
 	if (!debuggTool) {
 		for (int i = 0; i < Galaxy.size(); i++)
 		{
 			if (DetectColision(ship, Galaxy[i])) {
-				
 				ship.ToggleLive();
-				
 			}
 		}
 	} 
 }
-
 void Game::Update(float DT) {
-
+	Framerates[currentIndex++] = DT*5000;
+	if (currentIndex == TIME_MAX) currentIndex = 0;
 	UpdateGalaxy(DT);
 	UpdateMagazine(DT);
 	BulletCollision();
@@ -173,12 +168,14 @@ void Game::DebugMode(Player ship) {
 		Fps();
 	}
 }
+
 void Game::Fps() {
 	glLoadIdentity();
 	glBegin(GL_LINE_STRIP);
 	glColor3f(1.0, 0.75, 0.25);
-	for (int i = 0; i < TIME_MAX; i++)
-		glVertex2f(i + 280, Framerates[i] - 1600);
+		for (int i = 0; i < TIME_MAX; i++) {
+			glVertex2f(i + 280, Framerates[i] - 300);
+		}
 	glEnd();
 }
 void Game::Render() {

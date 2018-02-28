@@ -33,4 +33,7 @@ struct Asteroids : public Entity {
 	bool moving;
 	
 };
+//hey klk
+//como asi magazine? eso e mi vector de bullet
+//pero	q significa magazine xdd aaahh eso e el cartucho de las pistolas donde estan las balas lol ta bien
 

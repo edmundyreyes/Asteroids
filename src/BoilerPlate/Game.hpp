@@ -17,6 +17,7 @@ struct Game
 	void Update							(float);
 	void UpdateGalaxy					(float);
 	void UpdateMagazine					(float);
+	bool CheckCollisionWithMagazine		(Asteroids);
 	void ShipCollision					(Player);
 	void DebugMode						(Player);
 	void ShootNewBullet					(Player);
@@ -35,5 +36,6 @@ struct Game
 	std::vector<float> Framerates;
 	bool debuggTool;
 	int time;
+	
 };
 

@@ -197,7 +197,6 @@ namespace Engine
 		//            r      g    b		a
 		glClearColor(0.10, 0.15f, 0.40f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
 		if (m_playerONE.GetLives()) m_playerONE.Render();
 		gameUtility.Render();
 		

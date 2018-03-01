@@ -5,37 +5,42 @@ public:
 	InputManager();
 
 	bool GetKeyUp(void);
-	inline void ToggleKeyUp() { keyUp = !keyUp; }
+	void SetKeyUp(bool);
 	bool GetKeyW(void);
-	inline void ToggleKeyW() { keyW = !keyW; }
+	void SetKeyW(bool);
 	bool GetKeyLeft(void);
-	inline void ToggleKeyLeft() { keyLeft = !keyLeft; }	
+	void SetKeyLeft(bool);
 	bool GetKeyA(void);
-	inline void ToggleKeyA() { keyA = !keyA; }
+	void SetKeyA(bool);
 	bool GetKeyRight(void);
-	inline void ToggleKeyRight() { keyRight = !keyRight; }
+	void SetKeyRight(bool);
 	bool GetKeyD(void);
-	inline void ToggleKeyD() { keyD = !keyD; }
+	void SetKeyD(bool);
 	bool GetKeyU(void);
-	inline void ToggleKeyU() { keyU = !keyU; }
+	void SetKeyU(bool);
 	bool GetKeyJ(void);
-	inline void ToggleKeyJ() { keyJ = !keyJ; }
+	void SetKeyJ(bool);
 	bool GetKeySpace(void);
-	inline void ToggleKeySpace() { keySpace = !keySpace; }
+	void SetKeySpace(bool);
+	bool GetKeyP(void);
+	void SetKeyP(bool);
+	bool GetKeyF(void);
+	void SetKeyF(bool);
 
+//private:
+	bool keyUp; //
+	bool keyW;  //
+	bool keyLeft; // 
+	bool keyA;   //
+	bool keyRight;//
+	bool keyD; //
 
-	//inline void ToggleKey() { key = !key; }
+	bool keyU; //
+	bool keyJ; //
+	bool keySpace; //
 
-private:
-	bool keyUp;
-	bool keyW;
-	bool keyLeft;
-	bool keyA;
-	bool keyRight;
-	bool keyD;
-	bool keyU;
-	bool keyJ;
-	bool keySpace;
-	//9
+	bool keyP;
+	bool keyF;
+	
 };
 

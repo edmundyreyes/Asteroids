@@ -29,12 +29,13 @@ public:
 	
 	/// functions //////////////////////////////////////////////
 	
-	void Update				(float);
-	virtual void Render			   	(void);	  
-	virtual void ApplyImpulse	  (Vector2);
-	void DrawEntity				(void);	   
-	void calcMinMax(int, int);
-	void DrawHollowCircle(void);
+	void Update						   (float);
+	virtual void Render			   		(void);	  
+	virtual void ApplyImpulse		 (Vector2);
+	void DrawEntity						(void);	
+	void DrawEntityPolygon				(void);
+	void calcMinMax					(int, int);
+	void DrawHollowCircle				(void);
 
 
 

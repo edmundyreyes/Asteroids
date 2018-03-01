@@ -20,6 +20,8 @@ namespace Engine
 		gameUtility = Game();
 		gameUtility.StartUpRoutine(m_width, m_height);
 
+		inputManager = InputManager();
+
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 	}
@@ -88,48 +90,64 @@ namespace Engine
 		// Move forward with "W" key or with "UP" key
 		
 		case SDL_SCANCODE_UP:
-			m_playerONE.MoveForward();
+			inputManager.SetKeyUp(true);
 			SDL_Log("UP was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_W:
-			m_playerONE.MoveForward();
+			inputManager.SetKeyW(true);
 			SDL_Log("W was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 
 		// ROTATE ship with "A" key or "LEFT" key
 
 		case SDL_SCANCODE_LEFT:
-			m_playerONE.RotateLeft();
+			inputManager.SetKeyLeft(true);
 			SDL_Log("LEFT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_A:
-			m_playerONE.RotateLeft();
+			inputManager.SetKeyA(true);
 			SDL_Log("A was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 
 		// ROTATE ship with "D" key or "RIGHT" key
 
 		case SDL_SCANCODE_RIGHT:
-			m_playerONE.RotateRight();
+			inputManager.SetKeyRight(true);
 			SDL_Log("RIGHT was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 		case SDL_SCANCODE_D:
-			m_playerONE.RotateRight();
+			inputManager.SetKeyD(true);
 			SDL_Log("D was pressed.", keyBoardEvent.keysym.scancode);
 			break;
 
 		// Creating asteroids with "U" key
 
 		case SDL_SCANCODE_U:
-			gameUtility.CreateNewAsteroid(m_width, m_height);
+			inputManager.SetKeyU(true);
 			cout << "Render a Asteroid" << endl;
 			break;
 		
 		// deleting diferent asteroids with "j"
 		
 		case SDL_SCANCODE_J:
-			gameUtility.DeleteAsteroid();
+			inputManager.SetKeyJ(true);
 			cout << "erase a Asteroid" << endl;
+			break;
+
+		// Shotting
+		case SDL_SCANCODE_SPACE:
+			inputManager.SetKeySpace(true);
+			cout << "Shoot a Bullet" << endl;
+			break;
+
+		case SDL_SCANCODE_P:
+			inputManager.SetKeyP(true);
+			cout << "Entering Debugg Mode" << endl;
+			break;
+
+		case SDL_SCANCODE_F:
+			inputManager.SetKeyF(true);
+			cout << "Show fps" << endl;
 			break;
 		
 		default:
@@ -147,16 +165,63 @@ namespace Engine
 			OnExit();
 			break;
 
-		case SDL_SCANCODE_UP:
+		case SDL_SCANCODE_W:
+			inputManager.SetKeyW(false);
 			m_playerONE.trushterBool = false;
+			SDL_Log("W was released.", keyBoardEvent.keysym.scancode);
+			break;
+
+		case SDL_SCANCODE_A:
+			inputManager.keyA = false;
+			SDL_Log("Left was released.", keyBoardEvent.keysym.scancode);
+			break;
+
+		case SDL_SCANCODE_D:
+			inputManager.keyD = false;
+			SDL_Log("Right was released.", keyBoardEvent.keysym.scancode);
+			break;
+
+		case SDL_SCANCODE_UP:
+			inputManager.keyUp = false;
+			m_playerONE.trushterBool = false;
+			SDL_Log("W was released.", keyBoardEvent.keysym.scancode);
+			break;
+
+		case SDL_SCANCODE_LEFT:
+			inputManager.keyLeft = false;
+			SDL_Log("Left was released.", keyBoardEvent.keysym.scancode);
+			break;
+
+		case SDL_SCANCODE_RIGHT:
+			inputManager.keyRight = false;
+			SDL_Log("Right was released.", keyBoardEvent.keysym.scancode);
+			break;
+
+		case SDL_SCANCODE_SPACE:
+			inputManager.keySpace = false;
+			SDL_Log("Space was released.", keyBoardEvent.keysym.scancode);
+			break;
+
+		case SDL_SCANCODE_U:
+			inputManager.keyU = false;
+			SDL_Log("U was released.", keyBoardEvent.keysym.scancode);
+			break;
+
+		case SDL_SCANCODE_J:
+			inputManager.keyJ= false;
+			SDL_Log("J was released.", keyBoardEvent.keysym.scancode);
 			break;
 
 		case SDL_SCANCODE_P:
-			gameUtility.ToggleDebuggTool();
+			inputManager.SetKeyP(true);
+			cout << "Entering Debugg Mode" << endl;
 			break;
-		case SDL_SCANCODE_SPACE:
-			gameUtility.ShootNewBullet(m_playerONE);
+
+		case SDL_SCANCODE_F:
+			inputManager.SetKeyF(true);
+			cout << "Show fps" << endl;
 			break;
+
 		default:
 			//do nothing
 			break;
@@ -168,7 +233,19 @@ namespace Engine
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
-		
+		if (inputManager.GetKeyW()) m_playerONE.MoveForward();
+		if (inputManager.GetKeyA())  m_playerONE.RotateLeft();
+		if (inputManager.GetKeyD()) m_playerONE.RotateRight();
+
+		if (inputManager.GetKeyUp()) m_playerONE.MoveForward();
+		if (inputManager.GetKeyRight())  m_playerONE.RotateLeft();
+		if (inputManager.GetKeyLeft()) m_playerONE.RotateRight();
+
+		if (inputManager.GetKeyU()) gameUtility.CreateNewAsteroid(m_width, m_height);
+		if (inputManager.GetKeyJ()) gameUtility.DeleteAsteroid();
+		if (inputManager.GetKeySpace()) gameUtility.ShootNewBullet(m_playerONE);
+		if (inputManager.GetKeyP()) gameUtility.ToggleDebuggTool();
+		if (inputManager.GetKeyF()) gameUtility.Fps();
 		//
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
@@ -183,7 +260,7 @@ namespace Engine
 		double elapsedTime = endTime - startTime;
 
 		gameUtility.ShipCollision(m_playerONE);
-		gameUtility.Update(elapsedTime);
+		gameUtility.Update(elapsedTime,m_playerONE);
 		m_playerONE.Update(elapsedTime);
 
 
@@ -196,10 +273,11 @@ namespace Engine
 	{
 		//            r      g    b		a
 		glClearColor(0.10, 0.15f, 0.40f, 1.0f);
+
 		glClear(GL_COLOR_BUFFER_BIT);
-		if (m_playerONE.GetLives()) m_playerONE.Render();
+		//if (m_playerONE.GetLives()) 
+		m_playerONE.Render();
 		gameUtility.Render();
-		
 		gameUtility.DebugMode(m_playerONE);
 
 		SDL_GL_SwapWindow(m_mainWindow);

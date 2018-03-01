@@ -2,8 +2,8 @@
 
 const float THRUST = 60.0f;
 const float MAX_SPEED = 350.0f;
-const float ANGLE_ROTATE = 10.0f;
-const float DRAG_FORCE = 0.991f;
+const float ANGLE_ROTATE = 3.0f;
+const float DRAG_FORCE = 0.91f;
 const float ORIGIN = 0.0f;
 const float SHIPS_RADIUS = 17;
 
@@ -70,7 +70,7 @@ void Player::Update(float DT) {
 	
 	if (!moving) trushterBool = false;
 	float speed = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
-
+	live = live;
 	MathUtilities math;
 
 	if (speed > MAX_SPEED) {
@@ -95,18 +95,21 @@ void Player::PushDrawEntity() {
 	pointsContainer.push_back(Vector2(-12, -10));
 }
 void Player::Render() {
-	glLoadIdentity();
-	glTranslatef(position.x, position.y, ORIGIN);
-	glRotatef(angle, ORIGIN, ORIGIN, 1);
-
-	DrawEntity();
-	DrawThruster();
+	//if (live) {
+		glLoadIdentity();
+		glColor3f(0, 0.5, 0.5);
+		glTranslatef(position.x, position.y, ORIGIN);
+		glRotatef(angle, ORIGIN, ORIGIN, 1);
+		DrawEntityPolygon();
+		DrawThruster();
+	//}
 }
 bool Player::GetLives() {
 	return live;
 }
-void Player::SetLives(int newlives) {
-	live = newlives;
+void Player::SetLives(bool status) {
+	cout << status << endl;
+	live = status;
 }
 void Player::Killit() {
 	live = false;

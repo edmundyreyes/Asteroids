@@ -17,6 +17,7 @@
 #include "Player.hpp"
 #include "Asteroids.hpp"
 #include "ColorPalet.hpp"
+#include "InputManager.hpp"
 
 namespace Engine
 {
@@ -81,6 +82,7 @@ namespace Engine
 		Asteroids							asteroidBig;
 		Game								gameUtility;
 		Bullet								antiAsteroidsBullet;
+		InputManager						inputManager;
 
 	};
 }

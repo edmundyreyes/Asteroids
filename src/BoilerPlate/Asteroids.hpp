@@ -24,6 +24,7 @@ struct Asteroids : public Entity {
 	void PushDrawEntity		(void);
 	void ApplyImpulse(Vector2) override;
 	
+	
 
 	/// members ///////////////////////////////////////////////
 	
@@ -31,6 +32,7 @@ struct Asteroids : public Entity {
 	float mass;
 	float angle;
 	bool moving;
+
 	
 };
 //hey klk

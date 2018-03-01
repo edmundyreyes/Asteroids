@@ -25,7 +25,7 @@ struct Player : public Entity {
 	void PushDrawThruster(void);
 	void DrawThruster(void);
 	bool GetLives(void);
-	void SetLives(int);
+	void SetLives(bool);
 	void Killit(void);
 
 	void ApplyImpulse(Vector2) override;

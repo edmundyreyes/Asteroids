@@ -146,16 +146,18 @@ void Game::ShipCollision(Player ship) {
 		for (int i = 0; i < Galaxy.size(); i++)
 		{
 			if (DetectColision(ship, Galaxy[i])) {
-				ship.ToggleLive();
+				cout << "manuelitooo" << endl;
+				ship.SetLives(false);
 			}
 		}
 	} 
 }
-void Game::Update(float DT) {
+void Game::Update(float DT, Player ship) {
 	Framerates[currentIndex++] = DT*5000;
 	if (currentIndex == TIME_MAX) currentIndex = 0;
 	UpdateGalaxy(DT);
 	UpdateMagazine(DT);
+	ShipCollision(ship);
 	BulletCollision();
 }
 void Game::DebugMode(Player ship) {
@@ -165,7 +167,6 @@ void Game::DebugMode(Player ship) {
 		DrawBulletCircle();
 		for (int i = 0; i < Galaxy.size(); i++)
 			RenderLines(ship,Galaxy[i]);
-		Fps();
 	}
 }
 

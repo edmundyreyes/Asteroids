@@ -2,6 +2,7 @@
 #include "Asteroids.hpp"
 #include "Player.hpp"
 #include "Bullet.hpp"
+#include "InputManager.hpp"
 
 struct Game
 {
@@ -14,7 +15,7 @@ struct Game
 	void Fps							(void);
 	void DeleteAsteroid					(void);
 	void BulletCollision				(void);
-	void Update							(float);
+	void Update							(float, Player);
 	void UpdateGalaxy					(float);
 	void UpdateMagazine					(float);
 	bool CheckCollisionWithMagazine		(Asteroids);

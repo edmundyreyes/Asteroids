@@ -35,10 +35,19 @@ void Entity::Update( float DT){
 	position.y = Wrap(position.y, minHeight, maxHeight);
 
 }
-
+void Entity::DrawEntityPolygon() {
+	glColor3f(1, 1, 1);
+	
+	glBegin(GL_POLYGON);
+	for (int i = 0; i < pointsContainer.size(); i++) {
+		glVertex2f(pointsContainer[i].x, pointsContainer[i].y);
+	}
+	glEnd();
+}
 void Entity::DrawEntity() {
 	glColor3f(1, 1, 1);
-	glBegin(GL_POLYGON);
+
+	glBegin(GL_LINE_LOOP);
 	for (int i = 0; i < pointsContainer.size(); i++) {
 		glVertex2f(pointsContainer[i].x, pointsContainer[i].y);
 	}

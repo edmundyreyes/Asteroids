@@ -13,36 +13,36 @@ Asteroids::Asteroids() {}
 Asteroids::Asteroids(float width,float height):
 	Entity(width,height) {
 
-	asteroid_Size = 3;
-	angle = STARTING_ASTEROID_ANGLE;
+	m_Asteroid_Size = 3;
+	m_Angle = STARTING_ASTEROID_ANGLE;
 	PushDrawEntity();
-	mass = (float)(asteroid_Size);
+	m_Mass = (float)(m_Asteroid_Size);
 	position = Vector2((float)(rand()%1000), (float)(rand()%1000));
 	velocity = Vector2(ZERO, ZERO);
-	radius = asteroid_Size * ASTEROID_RADIO;
+	m_radius = m_Asteroid_Size * ASTEROID_RADIO;
 }
 Asteroids::Asteroids(Asteroid_Size size, float width, float height):
 	Entity(width, height) {
-	angle = STARTING_ASTEROID_ANGLE;
-	asteroid_Size = size; 
-	mass = (float)(asteroid_Size);
+	m_Angle = STARTING_ASTEROID_ANGLE;
+	m_Asteroid_Size = size; 
+	m_Mass = (float)(m_Asteroid_Size);
 	PushDrawEntity();
 	position = Vector2((float)(rand() % 1000), (float)(rand() % 1000));
 	velocity = Vector2(ZERO, ZERO);
-	radius = asteroid_Size * ASTEROID_RADIO;
+	m_radius = m_Asteroid_Size * ASTEROID_RADIO;
 }
 Asteroids::Asteroids(Asteroid_Size size, Asteroids rock) :
-	Entity(rock.maxWidth * 2, rock.maxHeight * 2) {
-	angle = rock.angle + rand() % 360;
-	asteroid_Size = size;
-	mass = (float)(asteroid_Size);
+	Entity(rock.m_maxWidth * 2, rock.m_maxHeight * 2) {
+	m_Angle = rock.m_Angle + rand() % 360;
+	m_Asteroid_Size = size;
+	m_Mass = (float)(m_Asteroid_Size);
 	PushDrawEntity();
 	position = Vector2(rock.position.x,rock.position.y);
 	velocity = Vector2(ZERO, ZERO);
-	radius = (float)(asteroid_Size) * ASTEROID_RADIO;
+	m_radius = (float)(m_Asteroid_Size) * ASTEROID_RADIO;
 }
 int Asteroids::Asteroid_GetSize() {
-	return asteroid_Size;
+	return m_Asteroid_Size;
 }
 void Asteroids::Update( float DT ) {
 	ASTEROID_ROTATE_ANGLE += ASTEROID_ROTATE_SPEED;
@@ -58,7 +58,9 @@ void Asteroids::Update( float DT ) {
 }
 void Asteroids::PushDrawEntity() {
 	int size = Asteroid_GetSize();
-
+	// The numbers inside the Vector2 are the points of the Asteroids
+	//  those are rendering using the vector, pointsContainer.
+	// multiply it by the size and you get the Draw for the Asteroid.
 	pointsContainer.push_back(Vector2(-26.0f * size, 6.0f  * size));//a
 	pointsContainer.push_back(Vector2(-9.0f  * size, 18.0f  * size));//b
 	pointsContainer.push_back(Vector2( 12.0f  * size, 20.0f  * size));//c
@@ -72,8 +74,8 @@ void Asteroids::PushDrawEntity() {
 }
 void Asteroids::ApplyImpulse(Vector2 vecImpulse) {
 	MathUtilities math;
-	velocity.x += (vecImpulse.x / mass) * cos(math.DegreesToRadians(angle));
-	velocity.y += (vecImpulse.y / mass) * sin(math.DegreesToRadians(angle));
+	velocity.x += (vecImpulse.x / m_Mass) * cos(math.DegreesToRadians(m_Angle));
+	velocity.y += (vecImpulse.y / m_Mass) * sin(math.DegreesToRadians(m_Angle));
 
 }
 void Asteroids::Render() {

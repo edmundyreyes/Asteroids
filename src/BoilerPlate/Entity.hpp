@@ -19,12 +19,12 @@ public:
 	Vector2 position;
 	Vector2 velocity;
 
-	float mass;
-	float maxWidth;
-	float minWidth;
-	float maxHeight;
-	float minHeight;
-	float radius;
+	float m_mass;
+	float m_maxWidth;
+	float m_minWidth;
+	float m_maxHeight;
+	float m_minHeight;
+	float m_radius;
 	/// constr. //////////////////////////////////////////
 
 	
@@ -35,7 +35,7 @@ public:
 	virtual void ApplyImpulse		 (Vector2);
 	void DrawEntity						(void);	
 	void DrawEntityPolygon				(void);
-	void CalcMinMax				(float, float);
+	void CalcMinMaxWidthHeight				(float, float);
 	void DrawHollowCircle				(void);
 	void OnResize				(float, float);
 

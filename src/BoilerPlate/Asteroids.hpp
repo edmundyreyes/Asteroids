@@ -28,14 +28,10 @@ struct Asteroids : public Entity {
 
 	/// members ///////////////////////////////////////////////
 	
-	int asteroid_Size;
-	float mass;
-	float angle;
-	bool moving;
+	int m_Asteroid_Size;
+	float m_Mass;
+	float m_Angle;
+	bool m_Moving;
 
 	
 };
-//hey klk
-//como asi magazine? eso e mi vector de bullet
-//pero	q significa magazine xdd aaahh eso e el cartucho de las pistolas donde estan las balas lol ta bien
-

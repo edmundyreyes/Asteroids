@@ -15,12 +15,12 @@ namespace Engine
 		, m_mainWindow(nullptr)
 	{
 		m_playerONE  = new Player((float)(m_width), (float)(m_height));
-		antiAsteroidsBullet =  Bullet(*m_playerONE);
+		m_AntiAsteroidsBullet =  Bullet(*m_playerONE);
 
 		m_Game = new Game((float)(m_width), (float)(m_height));
-		m_Game->StartUpRoutine((float)(m_width), (float)(m_height));
+		m_Game->StartUpRoutine();
 
-		inputManager = new InputManager();
+		m_InputManager = new InputManager();
 
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
@@ -90,63 +90,48 @@ namespace Engine
 		// Move forward with "W" key or with "UP" key
 		
 		case SDL_SCANCODE_UP:
-			inputManager->SetKeyUp(true);
-			SDL_Log("UP was pressed.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyUp(true);
 			break;
 		case SDL_SCANCODE_W:
-			inputManager->SetKeyW(true);
-			SDL_Log("W was pressed.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyW(true);
 			break;
 
 		// ROTATE ship with "A" key or "LEFT" key
 
 		case SDL_SCANCODE_LEFT:
-			inputManager->SetKeyLeft(true);
-			SDL_Log("LEFT was pressed.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyLeft(true);
 			break;
 		case SDL_SCANCODE_A:
-			inputManager->SetKeyA(true);
-			SDL_Log("A was pressed.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyA(true);
 			break;
 
 		// ROTATE ship with "D" key or "RIGHT" key
 
 		case SDL_SCANCODE_RIGHT:
-			inputManager->SetKeyRight(true);
-			SDL_Log("RIGHT was pressed.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyRight(true);
 			break;
 		case SDL_SCANCODE_D:
-			inputManager->SetKeyD(true);
-			SDL_Log("D was pressed.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyD(true);
 			break;
 
 		// Creating asteroids with "U" key
 
 		case SDL_SCANCODE_U:
-			inputManager->SetKeyU(true);
-			cout << "Render a Asteroid" << endl;
+			m_InputManager->SetKeyU(true);
 			break;
 		
 		// deleting diferent asteroids with "j"
 		
 		case SDL_SCANCODE_J:
-			inputManager->SetKeyJ(true);
-			cout << "erase a Asteroid" << endl;
-			break;
-
-
-		case SDL_SCANCODE_P:
-			inputManager->SetKeyP(true);
-			cout << "Entering Debugg Mode" << endl;
+			m_InputManager->SetKeyJ(true);
 			break;
 
 		case SDL_SCANCODE_F:
-			inputManager->SetKeyF(true);
-			cout << "Show fps" << endl;
+			m_InputManager->SetKeyF(true);
 			break;
 		
 		default:
-			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
+
 			break;
 		}
 	}
@@ -162,65 +147,58 @@ namespace Engine
 
 		case SDL_SCANCODE_R:
 			if(!m_Game->m_GAMEOVER) m_Game->m_GAMEOVER = true;
-			SDL_Log("Replay was released.", keyBoardEvent.keysym.scancode);
 			break;
 
 		case SDL_SCANCODE_W:
-			inputManager->SetKeyW(false);
-			m_playerONE->trushterBool = false;
-			SDL_Log("W was released.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyW(false);
+			m_playerONE->m_TrushterBool = false;
 			break;
 
 		case SDL_SCANCODE_A:
-			inputManager->keyA = false;
-			SDL_Log("Left was released.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyA(false);
 			break;
 
 		case SDL_SCANCODE_D:
-			inputManager->keyD = false;
-			SDL_Log("Right was released.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyD(false);
 			break;
 
 		case SDL_SCANCODE_UP:
-			inputManager->keyUp = false;
-			m_playerONE->trushterBool = false;
-			SDL_Log("W was released.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyUp(false);
+			m_playerONE->m_TrushterBool = false;
 			break;
 
 		case SDL_SCANCODE_LEFT:
-			inputManager->keyLeft = false;
-			SDL_Log("Left was released.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyLeft(false);
 			break;
 
 		case SDL_SCANCODE_RIGHT:
-			inputManager->keyRight = false;
-			SDL_Log("Right was released.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyRight(false);
+			
 			break;
 
 		case SDL_SCANCODE_SPACE:
 			m_Game->ShootNewBullet(*m_playerONE);
 			SoundEngine->play2D("audio/fire.wav");
-			SDL_Log("Space was released.", keyBoardEvent.keysym.scancode);
+			
 			break;
 
 		case SDL_SCANCODE_U:
-			inputManager->keyU = false;
-			SDL_Log("U was released.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyU( false);
+			
 			break;
 
 		case SDL_SCANCODE_J:
-			inputManager->keyJ= false;
-			SDL_Log("J was released.", keyBoardEvent.keysym.scancode);
+			m_InputManager->SetKeyJ(false);
+			
 			break;
 
 		case SDL_SCANCODE_P:
-			inputManager->SetKeyP(true);
-			cout << "Entering Debugg Mode" << endl;
+			m_Game->ToggleDebuggTool();
+			
 			break;
 
 		case SDL_SCANCODE_F:
-			inputManager->SetKeyF(true);
-			cout << "Show fps" << endl;
+			m_InputManager->SetKeyF(false);
 			break;
 
 		default:
@@ -385,23 +363,23 @@ namespace Engine
 	}
 
 	void App::InputManagement() {
-		if (inputManager->GetKeyW()) {
+		if (m_InputManager->GetKeyW()) {
 			m_playerONE->MoveForward();
 			SoundEngine->play2D("audio/thrust.wav");
 		}
-		if (inputManager->GetKeyA()) m_playerONE->RotateLeft();
-		if (inputManager->GetKeyD()) m_playerONE->RotateRight();
+		if (m_InputManager->GetKeyA()) m_playerONE->RotateLeft();
+		if (m_InputManager->GetKeyD()) m_playerONE->RotateRight();
 
-		if (inputManager->GetKeyUp()) {
+		if (m_InputManager->GetKeyUp()) {
 			m_playerONE->MoveForward();
 			SoundEngine->play2D("audio/thrust.wav");
 		} 
-		if (inputManager->GetKeyRight())  m_playerONE->RotateRight();
-		if (inputManager->GetKeyLeft()) m_playerONE->RotateLeft();
+		if (m_InputManager->GetKeyRight())  m_playerONE->RotateRight();
+		if (m_InputManager->GetKeyLeft()) m_playerONE->RotateLeft();
 
-		if (inputManager->GetKeyU()) m_Game->CreateNewAsteroid();
-		if (inputManager->GetKeyJ()) m_Game->DeleteAsteroid();
-		if (inputManager->GetKeyP()) m_Game->ToggleDebuggTool();
-		if (inputManager->GetKeyF()) m_Game->Fps();
+		if (m_InputManager->GetKeyU()) m_Game->CreateNewAsteroid();
+		if (m_InputManager->GetKeyJ()) m_Game->DeleteAsteroid();
+		if (m_InputManager->GetKeyP())
+		if (m_InputManager->GetKeyF()) m_Game->Fps();
 	}
 }

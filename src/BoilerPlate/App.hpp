@@ -79,8 +79,8 @@ namespace Engine
 
 		Player*								m_playerONE;
 		Game*								m_Game;
-		Bullet								antiAsteroidsBullet;
-		InputManager*						inputManager;
+		Bullet								m_AntiAsteroidsBullet;
+		InputManager*						m_InputManager;
 
 	};
 }

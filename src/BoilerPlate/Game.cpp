@@ -36,8 +36,8 @@ void Game::RenderMagazine() {
 }
 void Game::UpdateGalaxy(float DT) {
 	if (m_Galaxy.size() < 2) {
-		CreateNewAsteroid();
-		CreateNewAsteroid();
+		m_Galaxy.push_back(ReturnNewAsteroid());
+		m_Galaxy.push_back(ReturnNewAsteroid());
 	} 
 	for (int i = 0 ; i < m_Galaxy.size() ; i++) {
 		m_Galaxy[i].Update(DT);
@@ -74,10 +74,16 @@ void Game::DrawBulletCircle() {
 void Game::CreateNewAsteroid() {
 	if(m_debuggTool){
 		Asteroids rock = Asteroids(m_width, m_height);
-		rock.angle = (float)(rand() % FULLCIRCLE);
+		rock.m_Angle = (float)(rand() % FULLCIRCLE);
 		rock.position = Vector2((float)(rand()), (float)(rand()));
 		m_Galaxy.push_back(rock);
 	}
+}
+Asteroids Game::ReturnNewAsteroid() {
+	Asteroids rock = Asteroids(m_width, m_height);
+	rock.m_Angle = (float)(rand() % FULLCIRCLE);
+	rock.position = Vector2((float)(rand()), (float)(rand()));
+	return rock;
 }
 void Game::ShootNewBullet(Player ship) {
 	Bullet bulletCasket = Bullet(ship);
@@ -102,16 +108,16 @@ float Game::CalculateDistance(Entity player, Entity asteroid) {
 }
 bool Game::DetectColision(Entity player, Entity asteroid) {
 	
-	if (CalculateDistance(player, asteroid) < player.radius + asteroid.radius)
+	if (CalculateDistance(player, asteroid) < player.m_radius + asteroid.m_radius)
 		return true; 
 	else
 		return false;
 
 }
-void Game::StartUpRoutine(float m_width,float m_height) {
+void Game::StartUpRoutine() {
 	Asteroids rock = Asteroids(m_width, m_height);
 	for (int i = 0; i < 4; i++) {
-		rock.angle = (float)(rand() % FULLCIRCLE);
+		rock.m_Angle = (float)(rand() % FULLCIRCLE);
 		rock.position = Vector2((float)(rand()), (float)(rand()));
 		m_Galaxy.push_back(rock);
 	}
@@ -175,7 +181,7 @@ void Game::ShipCollision(Player &ship) {
 	if (!m_debuggTool) {
 		for (int i = 0; i < m_Galaxy.size(); i++)
 		{
-			if(ship.GetLive() == true && ship.LifeSoFar > 4){
+			if(ship.GetLive() == true && ship.m_LifeSoFar > 4){
 				if (DetectColision(ship, m_Galaxy[i])) {
 					ship.Killit();
 				}

@@ -25,13 +25,14 @@ struct Game
 	void Render							(Player);
 	void ShootNewBullet					(Player);
 	bool KillBullet						(Bullet);
-	void StartUpRoutine					(float, float);
+	void StartUpRoutine					(void);
 	void CreateNewAsteroid				(void);
 	float CalculateDistance				(Entity, Entity);
 	bool DetectColision					(Entity, Entity);
 	void RenderLines					(Entity, Entity);
 	void CheckForAnotherLife			(Player &);
 	void OnResize						(float, float);
+	Asteroids ReturnNewAsteroid			(void);
 	inline void ToggleDebuggTool		(void) { m_debuggTool = !m_debuggTool; }
 
 	void InitGameFontColor				(int, int, int, int);

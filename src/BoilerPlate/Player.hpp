@@ -3,6 +3,7 @@
 #include "Asteroids.hpp"
 
 
+
 struct Player : public Entity {
 	/// static /////////////////////////////////////////////////
 
@@ -27,29 +28,27 @@ struct Player : public Entity {
 	bool GetLive(void);
 
 	void ApplyImpulse(Vector2) override;
-	inline void ToggleMove() { moving = !moving; }
-	inline void ToggleLive() { live = !live; }
+	inline void ToggleMove() { m_moving = !m_moving; }
+	inline void ToggleLive() { m_Live = !m_Live; }
 
 	void SetLive(bool);
 	void Killit(void);
 	float GetStocks(void);
 	void PlusStock();
 	void DisplayLives(void);
+	void TimeDead(float);
 	
 	/// members ///////////////////////////////////////////////
 
-	float mass;
-	float angle;
-	bool moving;
-	int screenWidth;
-	int screenHeight;
-	bool trushterBool;
-	float currentSpeed;
-	void TimeDead(float);
+	float m_Mass;
+	float m_angle;
+	bool m_moving;
+	bool m_TrushterBool;
+	float m_CurrentSpeed;
 	std::vector <Vector2> pointsThruster;
-	float LifeSoFar;
+	float m_LifeSoFar;
 
 private:
-	float stocks;
-	bool live;
+	float m_Stocks;
+	bool m_Live;
 };

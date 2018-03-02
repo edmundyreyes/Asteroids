@@ -9,13 +9,13 @@ const float BULLET_MASS = 0.4f;
 Bullet::Bullet() {}
 
 Bullet::Bullet(Player ship):
-	Entity(ship.maxWidth*2, ship.maxHeight*2) 
+	Entity(ship.m_maxWidth*2, ship.m_maxHeight*2) 
 {
-	bulletAngle = ship.angle;
+	bulletAngle = ship.m_angle;
 	bulletLife = BULLET_LIFE;
-	radius = BULLET_RADIUS;
+	m_radius = BULLET_RADIUS;
 	PushDrawEntity();
-	mass = BULLET_MASS;
+	m_mass = BULLET_MASS;
 	velocity = Vector2(0, 0);
 	position = Vector2(ship.position.x, ship.position.y);
 
@@ -54,7 +54,7 @@ void Bullet::Update(float DT) {
 }
 void Bullet::ApplyImpulse(Vector2 vecImpulse) {
 	MathUtilities math;
-	velocity.x += (vecImpulse.x / mass) * cos(math.DegreesToRadians(bulletAngle + 90));
-	velocity.y += (vecImpulse.y / mass) * sin(math.DegreesToRadians(bulletAngle + 90));
+	velocity.x += (vecImpulse.x / m_mass) * cos(math.DegreesToRadians(bulletAngle + 90));
+	velocity.y += (vecImpulse.y / m_mass) * sin(math.DegreesToRadians(bulletAngle + 90));
 
 }

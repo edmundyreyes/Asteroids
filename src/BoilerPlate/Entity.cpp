@@ -1,8 +1,8 @@
 #include "Entity.hpp"
 /////// Constructors //////////////////////////////////////////////////////////////////////
 Entity::Entity(float width, float height) {
-	mass = 1.5f;
-	CalcMinMax(width, height);
+	m_mass = 1.5f;
+	CalcMinMaxWidthHeight(width, height);
 	
 }
 
@@ -10,15 +10,15 @@ Entity::Entity() {
 
 }
 
-void Entity::CalcMinMax(float width, float height) {
+void Entity::CalcMinMaxWidthHeight(float width, float height) {
 	float halfWidth = width * 0.5f;
 	float halfHeight = height * 0.5f;
 
-	maxWidth = halfWidth;
-	minWidth = -halfWidth;
+	m_maxWidth = halfWidth;
+	m_minWidth = -halfWidth;
 
-	maxHeight = halfHeight;
-	minHeight = -halfHeight;
+	m_maxHeight = halfHeight;
+	m_minHeight = -halfHeight;
 
 }
 float Wrap(float coordinate, float min, float max){
@@ -30,8 +30,8 @@ void Entity::Update( float DT){
 	position.x += velocity.x * DT;
 	position.y += velocity.y * DT;
 	
-	position.x = Wrap(position.x, minWidth , maxWidth);
-	position.y = Wrap(position.y, minHeight, maxHeight);
+	position.x = Wrap(position.x, m_minWidth , m_maxWidth);
+	position.y = Wrap(position.y, m_minHeight, m_maxHeight);
 
 }
 void Entity::DrawEntityPolygon() {
@@ -74,13 +74,13 @@ void Entity::DrawHollowCircle() {
 	glBegin(GL_LINE_LOOP);
 	for (i = 0; i <= lineAmount; i++) {
 		glVertex2f(
-			position.x + (radius * cos(i *  twicePi / lineAmount)),
-			position.y + (radius* sin(i * twicePi / lineAmount))
+			position.x + (m_radius * cos(i *  twicePi / lineAmount)),
+			position.y + (m_radius* sin(i * twicePi / lineAmount))
 		);
 	}
 	glEnd();
 	
 }
 void Entity::OnResize(float width, float height) {
-	CalcMinMax(width,height);
+	CalcMinMaxWidthHeight(width,height);
 }

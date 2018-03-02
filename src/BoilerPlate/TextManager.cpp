@@ -15,15 +15,7 @@ void TextManager::TextManagerInit(){
 	const SDL_version *link_version = TTF_Linked_Version();
 	SDL_TTF_VERSION(&compile_version);
 
-	SDL_Log("compiled with SDL_ttf version: %d.%d.%d\n",
-		compile_version.major,
-		compile_version.minor,
-		compile_version.patch);
-
-	SDL_Log("running with SDL_ttf version: %d.%d.%d\n",
-		link_version->major,
-		link_version->minor,
-		link_version->patch);
+	
 }
 unsigned int TextManager::power_two_floor(unsigned int val){
 	unsigned int power = 2, nextVal = power * 2;

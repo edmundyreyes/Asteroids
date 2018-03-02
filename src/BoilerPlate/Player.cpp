@@ -18,15 +18,15 @@ Player::Player() {}
 Player::Player(float width, float height):
 	Entity(width,height) {
 
-	live = true;
-	moving = false;
-	trushterBool = false;
-	angle  = ZERO;
-	LifeSoFar = ZERO;
+	m_Live = true;
+	m_moving = false;
+	m_TrushterBool = false;
+	m_angle  = ZERO;
+	m_LifeSoFar = ZERO;
 	PushDrawEntity();
 	PushDrawThruster();
-	radius = SHIPS_RADIUS;
-	stocks = STARTING_STOCKS;
+	m_radius = SHIPS_RADIUS;
+	m_Stocks = STARTING_STOCKS;
 	position = Vector2(ZERO, ZERO);
 	velocity = Vector2(ZERO, ZERO);
 
@@ -36,18 +36,18 @@ Player::Player(float width, float height):
 void Player::ApplyImpulse(Vector2 vecImpulse) {
 
 	MathUtilities math;
-	velocity.x += (vecImpulse.x ) * cos(math.DegreesToRadians(angle + FIXING_ANGLE));
-	velocity.y += (vecImpulse.y ) * sin(math.DegreesToRadians(angle + FIXING_ANGLE));
+	velocity.x += (vecImpulse.x ) * cos(math.DegreesToRadians(m_angle + FIXING_ANGLE));
+	velocity.y += (vecImpulse.y ) * sin(math.DegreesToRadians(m_angle + FIXING_ANGLE));
 }
 void Player::RotateLeft() {
-	angle += ANGLE_ROTATE;
+	m_angle += ANGLE_ROTATE;
 }
 void Player::RotateRight() {
-	angle -= ANGLE_ROTATE;
+	m_angle -= ANGLE_ROTATE;
 }
 void Player::MoveForward() {
-	trushterBool = true;
-	moving = true;
+	m_TrushterBool = true;
+	m_moving = true;
 	ApplyImpulse(Vector2(THRUST,THRUST));
 		
 }
@@ -55,7 +55,7 @@ void Player::MoveForward() {
 /////// Thruster //////////////////////////////////////////////////////////////////////
 
 void Player::DrawThruster() {
-	if (trushterBool) {
+	if (m_TrushterBool) {
 		glColor3f(1, 0, 0);
 		glBegin(GL_LINE_LOOP);
 		for (int i = 0; i < pointsThruster.size(); i++) {
@@ -73,21 +73,21 @@ void Player::PushDrawThruster() {
 
 void Player::Update(float DT) {
 	
-	if (!moving) trushterBool = false;
+	if (!m_moving) m_TrushterBool = false;
 	float speed = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
 	MathUtilities math;
-	LifeSoFar += DT;
+	m_LifeSoFar += DT;
 	if (speed > MAX_SPEED) {
 
 		velocity.x = math.Clamp(velocity.x, speed, MAX_SPEED);
 		velocity.y = math.Clamp(velocity.y, speed, MAX_SPEED);
 		speed = MAX_SPEED;
 	}
-	if (moving) {
+	if (m_moving) {
 		velocity.x *= DRAG_FORCE;
 		velocity.y *= DRAG_FORCE;
 	}
-	currentSpeed = speed;
+	m_CurrentSpeed = speed;
 	TimeDead(DT);
 
 	Entity::Update(DT);
@@ -100,52 +100,52 @@ void Player::PushDrawEntity() {
 	pointsContainer.push_back(Vector2(-12, -10));
 }
 void Player::Render() {
-	if (stocks > 0 && live) {
+	if (m_Stocks > 0 && m_Live) {
 		glLoadIdentity();
 		glColor3f(0, 0.5, 0.5);
 		glTranslatef(position.x, position.y, ZERO);
-		glRotatef(angle, ZERO, ZERO, 1);
+		glRotatef(m_angle, ZERO, ZERO, 1);
 		DrawEntityPolygon();
 		DrawThruster();
 		DisplayLives();
 	}
 }
 void Player::Killit() {
-	stocks--;
-	live = false;
+	m_Stocks--;
+	m_Live = false;
 	position.x = ZERO;
 	position.y = ZERO;
 	velocity.x = ZERO;
 	velocity.y = ZERO;
-	LifeSoFar = ZERO;
-	angle = ZERO;
+	m_LifeSoFar = ZERO;
+	m_angle = ZERO;
 }
 void Player::TimeDead(float DT) {
-	if (!live) {
+	if (!m_Live) {
 		timer += DT;
 		if (timer >= 2) {
-			live = true;
+			m_Live = true;
 			timer = 0;
 		}
 	}
 }
 bool Player::GetLive() {
-	return live;
+	return m_Live;
 }
 void Player::SetLive(bool status) {
-	live = status;
+	m_Live = status;
 }
 float Player::GetStocks() {
-	return stocks;
+	return m_Stocks;
 }
 void Player::PlusStock() {
-	stocks ++;
+	m_Stocks ++;
 }
 void Player::DisplayLives() {
 	float life_factor = 1;
-	for (int i = 0; i < stocks; i++) {
-		float xAxis = maxWidth - 40 * life_factor;
-		float yAxis = maxHeight  - 80;
+	for (int i = 0; i < m_Stocks; i++) {
+		float xAxis = m_maxWidth - 40 * life_factor;
+		float yAxis = m_maxHeight  - 80;
 		glLoadIdentity();
 		glTranslatef(xAxis , yAxis , 0.0f);
 		DrawEntity();

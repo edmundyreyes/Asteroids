@@ -4,8 +4,9 @@ const float THRUST = 60.0f;
 const float MAX_SPEED = 350.0f;
 const float ANGLE_ROTATE = 3.0f;
 const float DRAG_FORCE = 0.91f;
-const float ORIGIN = 0.0f;
+const float ZERO = 0.0f;
 const float SHIPS_RADIUS = 17;
+float timer = 0.0;
 
 /////// Constructors //////////////////////////////////////////////////////////////////////
 Player::Player() {}
@@ -14,12 +15,13 @@ Player::Player(float width, float height):
 	Entity(width,height) {
 
 	live = true;
+	stocks = 3;
 	trushterBool = false;
 	moving = false;
-	angle  = ORIGIN;
+	angle  = ZERO;
 	radius = SHIPS_RADIUS;
-	position = Vector2(ORIGIN, ORIGIN);
-	velocity = Vector2(ORIGIN, ORIGIN);
+	position = Vector2(ZERO, ZERO);
+	velocity = Vector2(ZERO, ZERO);
 	PushDrawEntity();
 	PushDrawThruster();
 
@@ -70,7 +72,6 @@ void Player::Update(float DT) {
 	
 	if (!moving) trushterBool = false;
 	float speed = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
-	live = live;
 	MathUtilities math;
 
 	if (speed > MAX_SPEED) {
@@ -84,6 +85,7 @@ void Player::Update(float DT) {
 		velocity.y *= DRAG_FORCE;
 	}
 	currentSpeed = speed;
+	Invulnerablity(DT);
 
 	Entity::Update(DT);
 }
@@ -95,22 +97,38 @@ void Player::PushDrawEntity() {
 	pointsContainer.push_back(Vector2(-12, -10));
 }
 void Player::Render() {
-	//if (live) {
+	cout << position.x << "   " << position.y << endl;
+	if (stocks > 0 && live) {
 		glLoadIdentity();
 		glColor3f(0, 0.5, 0.5);
-		glTranslatef(position.x, position.y, ORIGIN);
-		glRotatef(angle, ORIGIN, ORIGIN, 1);
+		glTranslatef(position.x, position.y, ZERO);
+		glRotatef(angle, ZERO, ZERO, 1);
 		DrawEntityPolygon();
 		DrawThruster();
-	//}
+	}
 }
-bool Player::GetLives() {
+bool Player::GetLive() {
 	return live;
 }
-void Player::SetLives(bool status) {
-	cout << status << endl;
+void Player::SetLive(bool status) {
 	live = status;
 }
 void Player::Killit() {
+	stocks--;
 	live = false;
+	position.x = ZERO;
+	position.y = ZERO;
+	velocity.x = ZERO;
+	velocity.y = ZERO;
+	angle = ZERO;
+}
+void Player::Invulnerablity(float DT) {
+	if (!live) {
+		timer += DT;
+		cout << timer << endl;
+		if (timer >= 2) {
+			live = true;
+			timer = 0;
+		}
+	}
 }

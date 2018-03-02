@@ -15,11 +15,11 @@ struct Game
 	void Fps							(void);
 	void DeleteAsteroid					(void);
 	void BulletCollision				(void);
-	void Update							(float, Player);
+	void Update							(float, Player&);
 	void UpdateGalaxy					(float);
 	void UpdateMagazine					(float);
 	bool CheckCollisionWithMagazine		(Asteroids);
-	void ShipCollision					(Player);
+	void ShipCollision					(Player &);
 	void DebugMode						(Player);
 	void ShootNewBullet					(Player);
 	bool KillBullet						(Bullet);

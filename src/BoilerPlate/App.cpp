@@ -14,11 +14,11 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
-		m_playerONE  = Player(m_width, m_height);
-		antiAsteroidsBullet = Bullet(m_playerONE);
+		m_playerONE  = new Player(m_width, m_height);
+		antiAsteroidsBullet = Bullet(*m_playerONE);
 
-		gameUtility = Game();
-		gameUtility.StartUpRoutine(m_width, m_height);
+		m_Game = Game();
+		m_Game.StartUpRoutine(m_width, m_height);
 
 		inputManager = InputManager();
 
@@ -134,11 +134,6 @@ namespace Engine
 			cout << "erase a Asteroid" << endl;
 			break;
 
-		// Shotting
-		case SDL_SCANCODE_SPACE:
-			inputManager.SetKeySpace(true);
-			cout << "Shoot a Bullet" << endl;
-			break;
 
 		case SDL_SCANCODE_P:
 			inputManager.SetKeyP(true);
@@ -161,13 +156,13 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_ESCAPE:
-			m_playerONE.ToggleMove();
+			m_playerONE->ToggleMove();
 			OnExit();
 			break;
 
 		case SDL_SCANCODE_W:
 			inputManager.SetKeyW(false);
-			m_playerONE.trushterBool = false;
+			m_playerONE->trushterBool = false;
 			SDL_Log("W was released.", keyBoardEvent.keysym.scancode);
 			break;
 
@@ -183,7 +178,7 @@ namespace Engine
 
 		case SDL_SCANCODE_UP:
 			inputManager.keyUp = false;
-			m_playerONE.trushterBool = false;
+			m_playerONE->trushterBool = false;
 			SDL_Log("W was released.", keyBoardEvent.keysym.scancode);
 			break;
 
@@ -198,7 +193,7 @@ namespace Engine
 			break;
 
 		case SDL_SCANCODE_SPACE:
-			inputManager.keySpace = false;
+			m_Game.ShootNewBullet(*m_playerONE);
 			SDL_Log("Space was released.", keyBoardEvent.keysym.scancode);
 			break;
 
@@ -233,19 +228,7 @@ namespace Engine
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
-		if (inputManager.GetKeyW()) m_playerONE.MoveForward();
-		if (inputManager.GetKeyA())  m_playerONE.RotateLeft();
-		if (inputManager.GetKeyD()) m_playerONE.RotateRight();
-
-		if (inputManager.GetKeyUp()) m_playerONE.MoveForward();
-		if (inputManager.GetKeyRight())  m_playerONE.RotateLeft();
-		if (inputManager.GetKeyLeft()) m_playerONE.RotateRight();
-
-		if (inputManager.GetKeyU()) gameUtility.CreateNewAsteroid(m_width, m_height);
-		if (inputManager.GetKeyJ()) gameUtility.DeleteAsteroid();
-		if (inputManager.GetKeySpace()) gameUtility.ShootNewBullet(m_playerONE);
-		if (inputManager.GetKeyP()) gameUtility.ToggleDebuggTool();
-		if (inputManager.GetKeyF()) gameUtility.Fps();
+		InputManagement();
 		//
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
@@ -259,9 +242,9 @@ namespace Engine
 
 		double elapsedTime = endTime - startTime;
 
-		gameUtility.ShipCollision(m_playerONE);
-		gameUtility.Update(elapsedTime,m_playerONE);
-		m_playerONE.Update(elapsedTime);
+		m_Game.ShipCollision(*m_playerONE);
+		m_Game.Update(elapsedTime,*m_playerONE);
+		m_playerONE->Update(elapsedTime);
 
 
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
@@ -276,9 +259,9 @@ namespace Engine
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		//if (m_playerONE.GetLives()) 
-		m_playerONE.Render();
-		gameUtility.Render();
-		gameUtility.DebugMode(m_playerONE);
+		m_playerONE->Render();
+		m_Game.Render();
+		m_Game.DebugMode(*m_playerONE);
 
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
@@ -391,5 +374,20 @@ namespace Engine
 		// Cleanup SDL pointers
 		//
 		CleanupSDL();
+	}
+
+	void App::InputManagement() {
+		if (inputManager.GetKeyW()) m_playerONE->MoveForward();
+		if (inputManager.GetKeyA())  m_playerONE->RotateLeft();
+		if (inputManager.GetKeyD()) m_playerONE->RotateRight();
+
+		if (inputManager.GetKeyUp()) m_playerONE->MoveForward();
+		if (inputManager.GetKeyRight())  m_playerONE->RotateRight();
+		if (inputManager.GetKeyLeft()) m_playerONE->RotateLeft();
+
+		if (inputManager.GetKeyU()) m_Game.CreateNewAsteroid(m_width, m_height);
+		if (inputManager.GetKeyJ()) m_Game.DeleteAsteroid();
+		if (inputManager.GetKeyP()) m_Game.ToggleDebuggTool();
+		if (inputManager.GetKeyF()) m_Game.Fps();
 	}
 }

@@ -4,7 +4,7 @@ const float MAX_SPEED = 60.0f;
 const float ASTEROID_RADIO = 27.0f;
 const float ASTEROID_ADVANCE_METERS = 10.0f;
 const float STARTING_ASTEROID_ANGLE = 30.0f;
-const float ORIGIN = 0.0f;
+const float ZERO = 0.0f;
 const float ASTEROID_ROTATE_SPEED = 0.3;
 float ASTEROID_ROTATE_ANGLE = 0;
 
@@ -18,7 +18,7 @@ Asteroids::Asteroids(float width,float height):
 	PushDrawEntity();
 	mass = asteroid_Size;
 	position = Vector2(rand() % 1000, rand() % 1000);
-	velocity = Vector2(ORIGIN, ORIGIN);
+	velocity = Vector2(ZERO, ZERO);
 	radius = asteroid_Size * ASTEROID_RADIO;
 }
 Asteroids::Asteroids(Asteroid_Size size, float width, float height):
@@ -28,7 +28,7 @@ Asteroids::Asteroids(Asteroid_Size size, float width, float height):
 	mass = asteroid_Size;
 	PushDrawEntity();
 	position = Vector2(rand() % 1000, rand() % 1000);
-	velocity = Vector2(ORIGIN, ORIGIN);
+	velocity = Vector2(ZERO, ZERO);
 	radius = asteroid_Size * ASTEROID_RADIO;
 }
 Asteroids::Asteroids(Asteroid_Size size, Asteroids rock) :
@@ -38,7 +38,7 @@ Asteroids::Asteroids(Asteroid_Size size, Asteroids rock) :
 	mass = asteroid_Size;
 	PushDrawEntity();
 	position = Vector2(rock.position.x,rock.position.y);
-	velocity = Vector2(ORIGIN, ORIGIN);
+	velocity = Vector2(ZERO, ZERO);
 	radius = asteroid_Size * ASTEROID_RADIO;
 }
 

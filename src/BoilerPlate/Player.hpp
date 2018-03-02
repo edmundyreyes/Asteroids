@@ -24,8 +24,8 @@ struct Player : public Entity {
 	void PushDrawEntity(void);
 	void PushDrawThruster(void);
 	void DrawThruster(void);
-	bool GetLives(void);
-	void SetLives(bool);
+	bool GetLive(void);
+	void SetLive(bool);
 	void Killit(void);
 
 	void ApplyImpulse(Vector2) override;
@@ -42,6 +42,9 @@ struct Player : public Entity {
 	std::vector <Vector2> pointsThruster;
 	bool moving;
 	float currentSpeed;
-protected:
+	void Invulnerablity(float);
+
+private:
+	int stocks;
 	bool live;
 };

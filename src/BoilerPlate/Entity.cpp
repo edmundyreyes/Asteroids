@@ -1,14 +1,13 @@
 #include "Entity.hpp"
 /////// Constructors //////////////////////////////////////////////////////////////////////
-Entity::Entity(int width, int height){
-
+Entity::Entity(int width, int height) {
 	mass = 1.5f;
 	calcMinMax(width, height);
 	
 }
 
 Entity::Entity() {
-	
+
 }
 
 void Entity::calcMinMax(int width, int height) {

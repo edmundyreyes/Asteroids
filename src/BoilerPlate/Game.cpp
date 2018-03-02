@@ -22,6 +22,7 @@ void Game::RenderMagazine() {
 	}
 }
 void Game::UpdateGalaxy(float DT) {
+	if (Galaxy.size() < 2) Galaxy.push_back(Asteroids(1116,360));
 	for (int i = 0 ; i < Galaxy.size() ; i++) {
 		Galaxy[i].Update(DT);
 	}
@@ -58,8 +59,7 @@ void Game::CreateNewAsteroid(float m_width,float m_height) {
 }
 void Game::ShootNewBullet(Player ship) {
 	Bullet bulletCasket = Bullet(ship);
-	Magazine.push_back(bulletCasket);
-	
+	if(ship.GetLive())Magazine.push_back(bulletCasket);
 }
 void Game::DeleteAsteroid() {
 	if (Galaxy.size() > 0){
@@ -141,18 +141,19 @@ bool Game::CheckCollisionWithMagazine(Asteroids temp)
 	return collision;
 }
 
-void Game::ShipCollision(Player ship) {
+void Game::ShipCollision(Player &ship) {
 	if (!debuggTool) {
 		for (int i = 0; i < Galaxy.size(); i++)
 		{
-			if (DetectColision(ship, Galaxy[i])) {
-				cout << "manuelitooo" << endl;
-				ship.SetLives(false);
+			if(ship.GetLive() == true){
+				if (DetectColision(ship, Galaxy[i])) {
+					ship.Killit();
+				}
 			}
 		}
 	} 
 }
-void Game::Update(float DT, Player ship) {
+void Game::Update(float DT, Player &ship) {
 	Framerates[currentIndex++] = DT*5000;
 	if (currentIndex == TIME_MAX) currentIndex = 0;
 	UpdateGalaxy(DT);
@@ -160,6 +161,7 @@ void Game::Update(float DT, Player ship) {
 	ShipCollision(ship);
 	BulletCollision();
 }
+
 void Game::DebugMode(Player ship) {
 	if (debuggTool) { 
 		DrawAsteroidCircles();
@@ -179,6 +181,7 @@ void Game::Fps() {
 		}
 	glEnd();
 }
+
 void Game::Render() {
 	RenderGalaxy();
 	RenderMagazine();

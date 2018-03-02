@@ -1,5 +1,5 @@
 #include "Bullet.hpp"
-const float ORIGIN = 0.0f;
+const float ZERO = 0.0f;
 const float SPACE_MAGIC = 30.0f;
 const float MAX_SPEED = 600.0f;
 const float BULLET_LIFE = 80;
@@ -28,7 +28,7 @@ void Bullet::PushDrawEntity() {
 }
 void Bullet::Render() {
 	glLoadIdentity();
-	glTranslatef(position.x, position.y, ORIGIN);
+	glTranslatef(position.x, position.y, ZERO);
 	DrawEntity();
 
 }

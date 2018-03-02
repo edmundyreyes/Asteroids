@@ -49,6 +49,7 @@ namespace Engine
 		bool Init							( );
 		void Update							( );
 		void Render							( );
+		void InputManagement				( );
 	private:
 		/* =============================================================
 		 * PRIVATE FUNCTIONS
@@ -76,11 +77,11 @@ namespace Engine
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
 
-		Player								m_playerONE;
+		Player*								m_playerONE;
 		Asteroids							asteroidSmall;
 		Asteroids							asteroidMid;
 		Asteroids							asteroidBig;
-		Game								gameUtility;
+		Game								m_Game;
 		Bullet								antiAsteroidsBullet;
 		InputManager						inputManager;
 

@@ -78,12 +78,9 @@ namespace Engine
 		Engine::TimeManager*				m_timer;
 
 		Player*								m_playerONE;
-		Asteroids							asteroidSmall;
-		Asteroids							asteroidMid;
-		Asteroids							asteroidBig;
-		Game								m_Game;
+		Game*								m_Game;
 		Bullet								antiAsteroidsBullet;
-		InputManager						inputManager;
+		InputManager*						inputManager;
 
 	};
 }

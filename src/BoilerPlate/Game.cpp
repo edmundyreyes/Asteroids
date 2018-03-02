@@ -5,10 +5,14 @@ const int FULLCIRCLE = 360;
 const int TIME_MAX = 250;
 int currentIndex = 0;
 
+irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
+
 Game::Game(){
 	debuggTool = false;
 	Framerates = std::vector <float>(300); 
-
+	score = 0;
+	textRenderer.TextManagerInit();
+	InitGameFontColor(255, 255, 255, 255);
 }
 void Game::RenderGalaxy() {
 	for (int i = 0; i < Galaxy.size(); i++) {
@@ -69,12 +73,12 @@ void Game::DeleteAsteroid() {
 float Game::CalculateDistance(Entity player, Entity asteroid) {
 	
 	//Ax is Asteroid axis x and Ay is asteroid axis y
-	int Ax = asteroid.position.x;
-	int Ay = asteroid.position.y;
+	float Ax = asteroid.position.x;
+	float Ay = asteroid.position.y;
 
 	//Px is player axis x and Py is player axis y
-	int Px = player.position.x;
-	int Py = player.position.y;
+	float Px = player.position.x;
+	float Py = player.position.y;
 	
 	return sqrtf((Px - Ax)*(Px - Ax) + (Py - Ay)*(Py - Ay));
 }
@@ -117,13 +121,21 @@ void Game::BulletCollision() {
 				if (Galaxy[i].Asteroid_GetSize() == Asteroids::BIG_SIZE) {
 					currentAsteroids.push_back(Asteroids(Asteroids::MEDIUM_SIZE, Galaxy[i]));
 					currentAsteroids.push_back(Asteroids(Asteroids::MEDIUM_SIZE, Galaxy[i]));
+					SoundEngine->play2D("audio/bangLarge.wav");
+					score += 20;
 				}
 				else if (Galaxy[i].Asteroid_GetSize() == Asteroids::MEDIUM_SIZE) {
 					currentAsteroids.push_back(Asteroids(Asteroids::SMALL_SIZE, Galaxy[i]));
 					currentAsteroids.push_back(Asteroids(Asteroids::SMALL_SIZE, Galaxy[i]));
+					SoundEngine->play2D("audio/bangMedium.wav");
+					score += 50;
 				}
+				else SoundEngine->play2D("audio/bangSmall.wav");
+				score += 100;
 			}
-			else currentAsteroids.push_back(Galaxy[i]); 
+			else {
+				currentAsteroids.push_back(Galaxy[i]);
+			}
 		}
 		Galaxy = currentAsteroids;
 	}
@@ -181,8 +193,13 @@ void Game::Fps() {
 		}
 	glEnd();
 }
-
 void Game::Render() {
 	RenderGalaxy();
 	RenderMagazine();
+}
+void Game::InitGameFontColor(int R, int G, int B, int A){
+	gameFontColor.r = R;
+	gameFontColor.g = G;
+	gameFontColor.b = B;
+	gameFontColor.a = A;
 }

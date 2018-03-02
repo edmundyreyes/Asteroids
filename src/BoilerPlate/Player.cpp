@@ -8,7 +8,9 @@ const float ZERO = 0.0f;
 const float SHIPS_RADIUS = 17;
 float timer = 0.0;
 
+
 /////// Constructors //////////////////////////////////////////////////////////////////////
+
 Player::Player() {}
 
 Player::Player(float width, float height):

@@ -3,6 +3,8 @@
 #include "Player.hpp"
 #include "Bullet.hpp"
 #include "InputManager.hpp"
+#include "TextManager.hpp"
+#include <string>
 
 struct Game
 {
@@ -29,6 +31,8 @@ struct Game
 	bool DetectColision					(Entity, Entity);
 	void RenderLines					(Entity, Entity);
 	inline void ToggleDebuggTool		(void) { debuggTool = !debuggTool; }
+	void InitGameFontColor(int, int, int, int);
+	void RenderGameGUI();
 
 
 	// members
@@ -37,6 +41,10 @@ struct Game
 	std::vector<float> Framerates;
 	bool debuggTool;
 	int time;
+	int score;
+	TextManager textRenderer;
+	TTF_Font *gameFont;
+	SDL_Color gameFontColor;
 	
 };
 

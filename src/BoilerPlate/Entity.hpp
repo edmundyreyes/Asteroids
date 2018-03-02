@@ -6,6 +6,7 @@
 #include <SDL_opengl.h>
 #include <vector>
 #include <cmath>
+#include <irrKlang.h> 
 
 class Entity
 {

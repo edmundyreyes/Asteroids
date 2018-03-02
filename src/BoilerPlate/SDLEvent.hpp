@@ -3,7 +3,7 @@
 #ifndef SDL_EVENT_HPP
 #define SDL_EVENT_HPP
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 namespace Engine
 {

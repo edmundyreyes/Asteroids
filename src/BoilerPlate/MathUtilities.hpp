@@ -4,29 +4,31 @@ using namespace std;
 class MathUtilities
 {
 public:
+	///// constructores /////////////////////////////////////////
+
 	MathUtilities();
-	~MathUtilities();
-	int floatToInt(float num);
-	int floatToEven(float num);
-
-	float clamp(float num, int min, int max);
-
-	float degreesToRadians(int angle);
-	int radiansToDegrees(float radian);
-
-	int radiansDistance(float radianA, float radianB); // me falta esto
-	int angularDistance(int angleA, int angleB);
 	
-	bool isAPowerOfTwo(int num);
-	float interpolate(float start, float end, float target);
+	///// Funciones ///////////////////////////////////////////////
+	
+	float FloatToInt					 (float );
+	float FloatToEven					 (float );
+	float Clamp			 (float ,float,float);
+	float DegreesToRadians			  (float);
+	float RadiansToDegrees			( float );
+	float RadiansDistance		( float , float );
+	float AngularDistance			( float , float );
+	bool IsAPowerOfTwo				  ( int );
+	float Interpolate(float , float , float );
+
+	///  Funciones con Templates  ////////////////////////////////////////////////
 
 	template <class data>
-	data getMin(data num1, data num2) {
+	data GetMin(data num1, data num2) {
 		if (num1 <= num2) return num1
 		else return num2;
 	}
 	template <class data>
-	data getMin(data num1, data num2, data num3) {
+	data GetMin(data num1, data num2, data num3) {
 		if (num1 <= num2) {
 			if (num1 <= num3) return num1;
 			else return num3;
@@ -37,7 +39,7 @@ public:
 		}
 	}
 	template <class data>
-	data getMin(data num1, data num2, data num3, data num4) {
+	data GetMin(data num1, data num2, data num3, data num4) {
 		if (num1 <= num2) {
 			if (num3 <= num4) {
 				if (num1 <= num3) return num1;
@@ -60,12 +62,12 @@ public:
 		}
 	}
 	template <class data>
-	data getMax(data num1, data num2) {
+	data GetMax(data num1, data num2) {
 		if (num1 >= num2) return num1
 		else return num2;
 	}
 	template <class data>
-	data getMax(data num1, data num2, data num3) {
+	data GetMax(data num1, data num2, data num3) {
 		if (num1 >= num2) {
 			if (num1 >= num3) return num1;
 			else return num3;
@@ -76,7 +78,7 @@ public:
 		}
 	}
 	template <class data>
-	data getMax(data num1, data num2, data num3, data num4) {
+	data GetMax(data num1, data num2, data num3, data num4) {
 		if (num1 >= num2) {
 			if (num3 >= num4) {
 				if (num1 >= num3) return num1;
@@ -98,5 +100,9 @@ public:
 			}
 		}
 	}
+
+	//// miembros /////////////////////////////////////////////////
+	
+	static float PI;
 };
 

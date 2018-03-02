@@ -5,10 +5,19 @@
 // C++ STL
 #include <string>
 #include <list>
+#include <iostream>
+#include <algorithm>
+#include <GL/glew.h>
+#include <SDL_opengl.h>
 
 // Asteroids
+#include "Game.hpp"
 #include "SDLEvent.hpp"
 #include "TimeManager.hpp"
+#include "Player.hpp"
+#include "Asteroids.hpp"
+#include "ColorPalet.hpp"
+#include "InputManager.hpp"
 
 namespace Engine
 {
@@ -40,6 +49,7 @@ namespace Engine
 		bool Init							( );
 		void Update							( );
 		void Render							( );
+		void InputManagement				( );
 	private:
 		/* =============================================================
 		 * PRIVATE FUNCTIONS
@@ -66,6 +76,11 @@ namespace Engine
 		SDL_GLContext						m_context;
 		GameState::State					m_state;
 		Engine::TimeManager*				m_timer;
+
+		Player*								m_playerONE;
+		Game*								m_Game;
+		Bullet								m_AntiAsteroidsBullet;
+		InputManager*						m_InputManager;
 
 	};
 }

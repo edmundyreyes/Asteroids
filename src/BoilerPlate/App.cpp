@@ -1,16 +1,10 @@
 #include "App.hpp"
-#include <iostream>
-#include <algorithm>
-#include "colorPalet.hpp"
-
-#include <GL/glew.h>
-#include <SDL2/SDL_opengl.h>
 
 namespace Engine
 {
 	const float DESIRED_FRAME_RATE = 60.0f;
 	const float DESIRED_FRAME_TIME = 1.0f / DESIRED_FRAME_RATE;
-	double ejeXp = 25.0, ejeXn = -25.0, ejeYp = 25.00, ejeYn = -25.00;
+	irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
 
 	App::App(const std::string& title, const int width, const int height)
 		: m_title(title)
@@ -20,6 +14,14 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
+		m_playerONE  = new Player((float)(m_width), (float)(m_height));
+		m_AntiAsteroidsBullet =  Bullet(*m_playerONE);
+
+		m_Game = new Game((float)(m_width), (float)(m_height));
+		m_Game->StartUpRoutine();
+
+		m_InputManager = new InputManager();
+
 		m_state = GameState::UNINITIALIZED;
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 	}
@@ -84,24 +86,52 @@ namespace Engine
 		case SDL_SCANCODE_ESCAPE:
 			OnExit();
 			break;
+		
+		// Move forward with "W" key or with "UP" key
+		
 		case SDL_SCANCODE_UP:
-			ejeYp += 10;
-			ejeYn += 10;
+			m_InputManager->SetKeyUp(true);
 			break;
-		case SDL_SCANCODE_DOWN:
-			ejeYn -= 10;
-			ejeYp -= 10;
+		case SDL_SCANCODE_W:
+			m_InputManager->SetKeyW(true);
 			break;
+
+		// ROTATE ship with "A" key or "LEFT" key
+
 		case SDL_SCANCODE_LEFT:
-			ejeXn -= 10;
-			ejeXp -= 10;
+			m_InputManager->SetKeyLeft(true);
 			break;
+		case SDL_SCANCODE_A:
+			m_InputManager->SetKeyA(true);
+			break;
+
+		// ROTATE ship with "D" key or "RIGHT" key
+
 		case SDL_SCANCODE_RIGHT:
-			ejeXn += 10;
-			ejeXp += 10;
+			m_InputManager->SetKeyRight(true);
 			break;
+		case SDL_SCANCODE_D:
+			m_InputManager->SetKeyD(true);
+			break;
+
+		// Creating asteroids with "U" key
+
+		case SDL_SCANCODE_U:
+			m_InputManager->SetKeyU(true);
+			break;
+		
+		// deleting diferent asteroids with "j"
+		
+		case SDL_SCANCODE_J:
+			m_InputManager->SetKeyJ(true);
+			break;
+
+		case SDL_SCANCODE_F:
+			m_InputManager->SetKeyF(true);
+			break;
+		
 		default:
-			SDL_Log("%S was pressed.", keyBoardEvent.keysym.scancode);
+
 			break;
 		}
 	}
@@ -111,8 +141,66 @@ namespace Engine
 		switch (keyBoardEvent.keysym.scancode)
 		{
 		case SDL_SCANCODE_ESCAPE:
+			m_playerONE->ToggleMove();
 			OnExit();
 			break;
+
+		case SDL_SCANCODE_R:
+			if(!m_Game->m_GAMEOVER) m_Game->m_GAMEOVER = true;
+			break;
+
+		case SDL_SCANCODE_W:
+			m_InputManager->SetKeyW(false);
+			m_playerONE->m_TrushterBool = false;
+			break;
+
+		case SDL_SCANCODE_A:
+			m_InputManager->SetKeyA(false);
+			break;
+
+		case SDL_SCANCODE_D:
+			m_InputManager->SetKeyD(false);
+			break;
+
+		case SDL_SCANCODE_UP:
+			m_InputManager->SetKeyUp(false);
+			m_playerONE->m_TrushterBool = false;
+			break;
+
+		case SDL_SCANCODE_LEFT:
+			m_InputManager->SetKeyLeft(false);
+			break;
+
+		case SDL_SCANCODE_RIGHT:
+			m_InputManager->SetKeyRight(false);
+			
+			break;
+
+		case SDL_SCANCODE_SPACE:
+			m_Game->ShootNewBullet(*m_playerONE);
+			SoundEngine->play2D("audio/fire.wav");
+			
+			break;
+
+		case SDL_SCANCODE_U:
+			m_InputManager->SetKeyU( false);
+			
+			break;
+
+		case SDL_SCANCODE_J:
+			m_InputManager->SetKeyJ(false);
+			
+			break;
+
+		case SDL_SCANCODE_P:
+			m_Game->ToggleDebuggTool();
+			
+			break;
+
+		case SDL_SCANCODE_F:
+			m_InputManager->SetKeyF(false);
+			break;
+
 		default:
 			//do nothing
 			break;
@@ -124,6 +212,7 @@ namespace Engine
 		double startTime = m_timer->GetElapsedTimeInSeconds();
 
 		// Update code goes here
+		InputManagement();
 		//
 
 		double endTime = m_timer->GetElapsedTimeInSeconds();
@@ -135,7 +224,12 @@ namespace Engine
 			endTime = m_timer->GetElapsedTimeInSeconds();
 		}
 
-		//double elapsedTime = endTime - startTime;        
+		double elapsedTime = endTime - startTime;
+
+		m_Game->ShipCollision(*m_playerONE);
+		m_Game->Update((float)(elapsedTime),*m_playerONE);
+		m_playerONE->Update((float)(elapsedTime));
+
 
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
 
@@ -144,17 +238,14 @@ namespace Engine
 
 	void App::Render()
 	{
-		//            r      g    y		b
-		glClearColor(0.0, 0.50f, 0.50f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		//            r      g    b		a
+		glClearColor(0.10f, 0.15f, 0.40f, 1.0f);
 
-		glBegin(GL_LINE_LOOP);
-		glColor3f(1.0f, 0.55f, 0.50f);
-		glVertex2f(ejeXp, ejeYp);
-		glVertex2f(ejeXp, ejeYn);
-		glVertex2f(ejeXn, ejeYp);
-		glVertex2f(ejeXn, ejeYn);
-		glEnd();
+		glClear(GL_COLOR_BUFFER_BIT);
+		//if (m_playerONE.GetLives()) 
+		m_playerONE->Render();
+		m_Game->Render(*m_playerONE);
+		m_Game->DebugMode(*m_playerONE);
 
 		SDL_GL_SwapWindow(m_mainWindow);
 	}
@@ -162,13 +253,13 @@ namespace Engine
 	bool App::SDLInit()
 	{
 		// Initialize SDL's Video subsystem
-		//
+
 		if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 		{
 			std::cerr << "Failed to init SDL" << std::endl;
 			return false;
 		}
-
+		
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
@@ -256,6 +347,8 @@ namespace Engine
 		m_height = height;
 
 		SetupViewport();
+		m_playerONE->OnResize((float)(m_width), (float)(m_height));
+		m_Game->OnResize((float)(m_width), (float)(m_height));
 	}
 
 	void App::OnExit()
@@ -267,5 +360,26 @@ namespace Engine
 		// Cleanup SDL pointers
 		//
 		CleanupSDL();
+	}
+
+	void App::InputManagement() {
+		if (m_InputManager->GetKeyW()) {
+			m_playerONE->MoveForward();
+			SoundEngine->play2D("audio/thrust.wav");
+		}
+		if (m_InputManager->GetKeyA()) m_playerONE->RotateLeft();
+		if (m_InputManager->GetKeyD()) m_playerONE->RotateRight();
+
+		if (m_InputManager->GetKeyUp()) {
+			m_playerONE->MoveForward();
+			SoundEngine->play2D("audio/thrust.wav");
+		} 
+		if (m_InputManager->GetKeyRight())  m_playerONE->RotateRight();
+		if (m_InputManager->GetKeyLeft()) m_playerONE->RotateLeft();
+
+		if (m_InputManager->GetKeyU()) m_Game->CreateNewAsteroid();
+		if (m_InputManager->GetKeyJ()) m_Game->DeleteAsteroid();
+		if (m_InputManager->GetKeyP())
+		if (m_InputManager->GetKeyF()) m_Game->Fps();
 	}
 }

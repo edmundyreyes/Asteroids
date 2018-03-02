@@ -2,47 +2,45 @@
 #include "Math.h"
 using namespace std;
 
-MathUtilities::MathUtilities()
-{
+MathUtilities::MathUtilities(){
 }
-MathUtilities::~MathUtilities()
-{}
-int MathUtilities::floatToInt(float x){
-	int y = 0;
+
+float MathUtilities::PI = (float)(3.141592);
+
+float MathUtilities::FloatToInt(float x){
+	float y = 0;
 	y = round(x);
 	return y;
 }
-int MathUtilities::floatToEven(float x) {
-	int y = 0;
+float MathUtilities::FloatToEven(float x) {
+	float y = 0;
 	y = round(x);
-	if (y % 2 == 1) y += 1;
+	if (y - 2 == 1) y += 1;
 	return y;
 }
-float MathUtilities::clamp(float num, int min, int max) {
-	if (num < min) num = min;
-	else if (num > max) num = max;
-	return num;
+float MathUtilities::Clamp(float num, float min, float max) {
+	return (num / min) * max;
 }
 
-float MathUtilities::degreesToRadians(int angle) {
-	return angle * 0.01745329252;
+float MathUtilities::DegreesToRadians(float angle) {
+	return (float)(angle * 0.01745);
 }
 
-int MathUtilities::radiansToDegrees(float radian) {
-	float x =  radian * 57.295779513;
+float MathUtilities::RadiansToDegrees(float radian) {
+	float x =  (float)(radian * 57.295779513);
 	x = round(x);
 	return x;
 }
-int MathUtilities::radiansDistance(float radianA, float radianB) {
+float MathUtilities::RadiansDistance(float radianA, float radianB) {
 	radianB -= radianA;
 	return radianB;
 }
-int MathUtilities::angularDistance(int angleA, int angleB) {
+float MathUtilities::AngularDistance(float angleA, float angleB) {
 	angleB -= angleA;
 	return angleB;
 }
 
-bool MathUtilities::isAPowerOfTwo(int num) {
+bool MathUtilities::IsAPowerOfTwo(int num) {
 	if (num % 2 == 1) return false;
 	int n = num;
 	for (int i = 0; i < n; i++) {
@@ -52,9 +50,10 @@ bool MathUtilities::isAPowerOfTwo(int num) {
 			return false;
 		}
 	}
+	return num;
 }
-float MathUtilities::interpolate(float start, float end, float target) {
+float MathUtilities::Interpolate(float start, float end, float target) {
 	float res = 0;
 	res = target * (end - start) + start;
-	return res;
+	return end;
 }

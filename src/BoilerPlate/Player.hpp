@@ -45,8 +45,9 @@ struct Player : public Entity {
 	int screenHeight;
 	bool trushterBool;
 	float currentSpeed;
-	void Invulnerablity(float);
+	void TimeDead(float);
 	std::vector <Vector2> pointsThruster;
+	float LifeSoFar;
 
 private:
 	float stocks;

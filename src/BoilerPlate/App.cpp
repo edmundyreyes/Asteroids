@@ -14,11 +14,11 @@ namespace Engine
 		, m_timer(new TimeManager)
 		, m_mainWindow(nullptr)
 	{
-		m_playerONE  = new Player(m_width, m_height);
+		m_playerONE  = new Player((float)(m_width), (float)(m_height));
 		antiAsteroidsBullet =  Bullet(*m_playerONE);
 
-		m_Game = new Game(m_width, m_height);
-		m_Game->StartUpRoutine(m_width, m_height);
+		m_Game = new Game((float)(m_width), (float)(m_height));
+		m_Game->StartUpRoutine((float)(m_width), (float)(m_height));
 
 		inputManager = new InputManager();
 
@@ -160,6 +160,11 @@ namespace Engine
 			OnExit();
 			break;
 
+		case SDL_SCANCODE_R:
+			if(!m_Game->m_GAMEOVER) m_Game->m_GAMEOVER = true;
+			SDL_Log("Replay was released.", keyBoardEvent.keysym.scancode);
+			break;
+
 		case SDL_SCANCODE_W:
 			inputManager->SetKeyW(false);
 			m_playerONE->trushterBool = false;
@@ -244,8 +249,8 @@ namespace Engine
 		double elapsedTime = endTime - startTime;
 
 		m_Game->ShipCollision(*m_playerONE);
-		m_Game->Update(elapsedTime,*m_playerONE);
-		m_playerONE->Update(elapsedTime);
+		m_Game->Update((float)(elapsedTime),*m_playerONE);
+		m_playerONE->Update((float)(elapsedTime));
 
 
 		m_lastFrameTime = m_timer->GetElapsedTimeInSeconds();
@@ -256,7 +261,7 @@ namespace Engine
 	void App::Render()
 	{
 		//            r      g    b		a
-		glClearColor(0.10, 0.15f, 0.40f, 1.0f);
+		glClearColor(0.10f, 0.15f, 0.40f, 1.0f);
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		//if (m_playerONE.GetLives()) 
@@ -364,8 +369,8 @@ namespace Engine
 		m_height = height;
 
 		SetupViewport();
-		m_playerONE->OnResize(width,height);
-		m_Game->OnResize(width, height);
+		m_playerONE->OnResize((float)(m_width), (float)(m_height));
+		m_Game->OnResize((float)(m_width), (float)(m_height));
 	}
 
 	void App::OnExit()

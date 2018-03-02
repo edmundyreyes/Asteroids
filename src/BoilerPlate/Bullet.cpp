@@ -4,6 +4,7 @@ const float SPACE_MAGIC = 30.0f;
 const float MAX_SPEED = 600.0f;
 const float BULLET_LIFE = 80.0f;
 const float BULLET_RADIUS = 5.0f;
+const float BULLET_MASS = 0.4f;
 
 Bullet::Bullet() {}
 
@@ -14,7 +15,7 @@ Bullet::Bullet(Player ship):
 	bulletLife = BULLET_LIFE;
 	radius = BULLET_RADIUS;
 	PushDrawEntity();
-	mass = 0.4;
+	mass = BULLET_MASS;
 	velocity = Vector2(0, 0);
 	position = Vector2(ship.position.x, ship.position.y);
 
@@ -32,7 +33,7 @@ void Bullet::Render() {
 	DrawEntity();
 
 }
-int Bullet::Getlife() {
+float Bullet::Getlife() {
 	return bulletLife;
 }
 bool Bullet::GetisAlive() {
@@ -45,15 +46,15 @@ void Bullet::Update(float DT) {
 	float speed = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
 	MathUtilities math;
 	if (speed > MAX_SPEED) {
-		velocity.x = math.clamp(velocity.x, speed, MAX_SPEED);
-		velocity.y = math.clamp(velocity.y, speed, MAX_SPEED);
+		velocity.x = math.Clamp(velocity.x, speed, MAX_SPEED);
+		velocity.y = math.Clamp(velocity.y, speed, MAX_SPEED);
 		speed = MAX_SPEED;
 	}
 	Entity::Update(DT);
 }
 void Bullet::ApplyImpulse(Vector2 vecImpulse) {
 	MathUtilities math;
-	velocity.x += (vecImpulse.x / mass) * cos(math.degreesToRadians(bulletAngle + 90));
-	velocity.y += (vecImpulse.y / mass) * sin(math.degreesToRadians(bulletAngle + 90));
+	velocity.x += (vecImpulse.x / mass) * cos(math.DegreesToRadians(bulletAngle + 90));
+	velocity.y += (vecImpulse.y / mass) * sin(math.DegreesToRadians(bulletAngle + 90));
 
 }

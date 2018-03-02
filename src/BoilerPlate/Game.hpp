@@ -27,7 +27,6 @@ struct Game
 	bool KillBullet						(Bullet);
 	void StartUpRoutine					(float, float);
 	void CreateNewAsteroid				(void);
-	Asteroids ReturnNewAsteroid			(void);
 	float CalculateDistance				(Entity, Entity);
 	bool DetectColision					(Entity, Entity);
 	void RenderLines					(Entity, Entity);
@@ -37,6 +36,8 @@ struct Game
 
 	void InitGameFontColor				(int, int, int, int);
 	void RenderGameGUI					(Player );
+	void Reset(void);
+	void ResetPlayer(Player &);
 
 
 	// members
@@ -52,6 +53,7 @@ struct Game
 	SDL_Color m_GameFontColor;
 	float m_width;
 	float m_height;
+	bool m_GAMEOVER;
 	
 };
 

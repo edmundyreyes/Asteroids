@@ -22,6 +22,7 @@ Player::Player(float width, float height):
 	moving = false;
 	trushterBool = false;
 	angle  = ZERO;
+	LifeSoFar = ZERO;
 	PushDrawEntity();
 	PushDrawThruster();
 	radius = SHIPS_RADIUS;
@@ -35,8 +36,8 @@ Player::Player(float width, float height):
 void Player::ApplyImpulse(Vector2 vecImpulse) {
 
 	MathUtilities math;
-	velocity.x += (vecImpulse.x ) * cos(math.degreesToRadians(angle + FIXING_ANGLE));
-	velocity.y += (vecImpulse.y ) * sin(math.degreesToRadians(angle + FIXING_ANGLE));
+	velocity.x += (vecImpulse.x ) * cos(math.DegreesToRadians(angle + FIXING_ANGLE));
+	velocity.y += (vecImpulse.y ) * sin(math.DegreesToRadians(angle + FIXING_ANGLE));
 }
 void Player::RotateLeft() {
 	angle += ANGLE_ROTATE;
@@ -75,11 +76,11 @@ void Player::Update(float DT) {
 	if (!moving) trushterBool = false;
 	float speed = sqrtf(velocity.x * velocity.x + velocity.y * velocity.y);
 	MathUtilities math;
-
+	LifeSoFar += DT;
 	if (speed > MAX_SPEED) {
 
-		velocity.x = math.clamp(velocity.x, speed, MAX_SPEED);
-		velocity.y = math.clamp(velocity.y, speed, MAX_SPEED);
+		velocity.x = math.Clamp(velocity.x, speed, MAX_SPEED);
+		velocity.y = math.Clamp(velocity.y, speed, MAX_SPEED);
 		speed = MAX_SPEED;
 	}
 	if (moving) {
@@ -87,7 +88,7 @@ void Player::Update(float DT) {
 		velocity.y *= DRAG_FORCE;
 	}
 	currentSpeed = speed;
-	Invulnerablity(DT);
+	TimeDead(DT);
 
 	Entity::Update(DT);
 }
@@ -116,12 +117,12 @@ void Player::Killit() {
 	position.y = ZERO;
 	velocity.x = ZERO;
 	velocity.y = ZERO;
+	LifeSoFar = ZERO;
 	angle = ZERO;
 }
-void Player::Invulnerablity(float DT) {
+void Player::TimeDead(float DT) {
 	if (!live) {
 		timer += DT;
-		cout << timer << endl;
 		if (timer >= 2) {
 			live = true;
 			timer = 0;

@@ -8,7 +8,7 @@ public:
 	void Render(void);
 	void Update(float DT);
 	void ApplyImpulse(Vector2 vecImpulse);
-	int Getlife(void);
+	float Getlife(void);
 	bool GetisAlive(void);
 
 

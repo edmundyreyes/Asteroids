@@ -82,5 +82,3 @@ void Asteroids::Render() {
 	glRotatef(ASTEROID_ROTATE_ANGLE, 0.0f, 0.0f, 1.0f);
 	DrawEntity();
 }
-
-//hey hola

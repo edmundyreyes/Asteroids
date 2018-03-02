@@ -12,7 +12,7 @@ class Entity
 {
 public:
 	Entity();
-	Entity(int , int);
+	Entity(float , float);
 	// members  ////////////////////////////////////////////////////////////////////
 
 	std::vector<Vector2> pointsContainer;
@@ -24,7 +24,7 @@ public:
 	float minWidth;
 	float maxHeight;
 	float minHeight;
-	int radius;
+	float radius;
 	/// constr. //////////////////////////////////////////
 
 	
@@ -35,8 +35,9 @@ public:
 	virtual void ApplyImpulse		 (Vector2);
 	void DrawEntity						(void);	
 	void DrawEntityPolygon				(void);
-	void calcMinMax					(int, int);
+	void CalcMinMax				(float, float);
 	void DrawHollowCircle				(void);
+	void OnResize				(float, float);
 
 
 

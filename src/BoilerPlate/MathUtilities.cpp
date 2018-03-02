@@ -5,37 +5,37 @@ using namespace std;
 MathUtilities::MathUtilities(){
 }
 
-float MathUtilities::PI = 3.14159226;
+float MathUtilities::PI = (float)(3.141592);
 
-int MathUtilities::floatToInt(float x){
+float MathUtilities::floatToInt(float x){
 	float y = 0;
 	y = round(x);
 	return y;
 }
-int MathUtilities::floatToEven(float x) {
-	int y = 0;
+float MathUtilities::floatToEven(float x) {
+	float y = 0;
 	y = round(x);
-	if (y % 2 == 1) y += 1;
+	if (y - 2 == 1) y += 1;
 	return y;
 }
-float MathUtilities::clamp(float num, int min, int max) {
+float MathUtilities::clamp(float num, float min, float max) {
 	return (num / min) * max;
 }
 
-float MathUtilities::degreesToRadians(int angle) {
-	return angle * 0.01745329252;
+float MathUtilities::degreesToRadians(float angle) {
+	return (float)(angle * 0.01745);
 }
 
-int MathUtilities::radiansToDegrees(float radian) {
-	float x =  radian * 57.295779513;
+float MathUtilities::radiansToDegrees(float radian) {
+	float x =  (float)(radian * 57.295779513);
 	x = round(x);
 	return x;
 }
-int MathUtilities::radiansDistance(float radianA, float radianB) {
+float MathUtilities::radiansDistance(float radianA, float radianB) {
 	radianB -= radianA;
 	return radianB;
 }
-int MathUtilities::angularDistance(int angleA, int angleB) {
+float MathUtilities::angularDistance(float angleA, float angleB) {
 	angleB -= angleA;
 	return angleB;
 }

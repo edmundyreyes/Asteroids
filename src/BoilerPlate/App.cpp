@@ -364,6 +364,8 @@ namespace Engine
 		m_height = height;
 
 		SetupViewport();
+		m_playerONE->OnResize(width,height);
+		m_Game->OnResize(width, height);
 	}
 
 	void App::OnExit()
@@ -392,7 +394,7 @@ namespace Engine
 		if (inputManager->GetKeyRight())  m_playerONE->RotateRight();
 		if (inputManager->GetKeyLeft()) m_playerONE->RotateLeft();
 
-		if (inputManager->GetKeyU()) m_Game->CreateNewAsteroid(m_width, m_height);
+		if (inputManager->GetKeyU()) m_Game->CreateNewAsteroid();
 		if (inputManager->GetKeyJ()) m_Game->DeleteAsteroid();
 		if (inputManager->GetKeyP()) m_Game->ToggleDebuggTool();
 		if (inputManager->GetKeyF()) m_Game->Fps();

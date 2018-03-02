@@ -1,7 +1,7 @@
 #include "Color.hpp"
 using namespace std;
 
-static class ColorPalet {
+ class ColorPalet {
 public:
 	Color Red();
 	Color Blue();

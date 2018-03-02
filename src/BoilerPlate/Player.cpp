@@ -6,6 +6,8 @@ const float ANGLE_ROTATE = 3.0f;
 const float DRAG_FORCE = 0.91f;
 const float ZERO = 0.0f;
 const float SHIPS_RADIUS = 17;
+const float STARTING_STOCKS = 3;
+const float FIXING_ANGLE = 90;
 float timer = 0.0;
 
 
@@ -17,15 +19,15 @@ Player::Player(float width, float height):
 	Entity(width,height) {
 
 	live = true;
-	stocks = 3;
-	trushterBool = false;
 	moving = false;
+	trushterBool = false;
 	angle  = ZERO;
-	radius = SHIPS_RADIUS;
-	position = Vector2(ZERO, ZERO);
-	velocity = Vector2(ZERO, ZERO);
 	PushDrawEntity();
 	PushDrawThruster();
+	radius = SHIPS_RADIUS;
+	stocks = STARTING_STOCKS;
+	position = Vector2(ZERO, ZERO);
+	velocity = Vector2(ZERO, ZERO);
 
 }
 
@@ -33,10 +35,8 @@ Player::Player(float width, float height):
 void Player::ApplyImpulse(Vector2 vecImpulse) {
 
 	MathUtilities math;
-	velocity.x += (vecImpulse.x ) * cos(math.degreesToRadians(angle + 90));
-	velocity.y += (vecImpulse.y ) * sin(math.degreesToRadians(angle + 90));
-
-
+	velocity.x += (vecImpulse.x ) * cos(math.degreesToRadians(angle + FIXING_ANGLE));
+	velocity.y += (vecImpulse.y ) * sin(math.degreesToRadians(angle + FIXING_ANGLE));
 }
 void Player::RotateLeft() {
 	angle += ANGLE_ROTATE;
@@ -106,6 +106,7 @@ void Player::Render() {
 		glRotatef(angle, ZERO, ZERO, 1);
 		DrawEntityPolygon();
 		DrawThruster();
+		DisplayLives();
 	}
 }
 void Player::Killit() {
@@ -133,9 +134,20 @@ bool Player::GetLive() {
 void Player::SetLive(bool status) {
 	live = status;
 }
-int Player::GetStocks() {
+float Player::GetStocks() {
 	return stocks;
 }
-void Player::SetStocks(int numberOfLife ) {
-	stocks = numberOfLife;
+void Player::PlusStock() {
+	stocks ++;
+}
+void Player::DisplayLives() {
+	float life_factor = 1;
+	for (int i = 0; i < stocks; i++) {
+		float xAxis = maxWidth - 40 * life_factor;
+		float yAxis = maxHeight  - 80;
+		glLoadIdentity();
+		glTranslatef(xAxis , yAxis , 0.0f);
+		DrawEntity();
+		life_factor++;
+	}
 }

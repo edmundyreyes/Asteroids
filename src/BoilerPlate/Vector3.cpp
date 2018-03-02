@@ -31,7 +31,7 @@ Vector3::Vector3(const Vector2& vec2) {
 	Length();
 }
 float Vector3::Length(){
-	return std::sqrt(x * x + y * y + z * z);
+	return std::sqrtf(x * x + y * y + z * z);
 }
 float Vector3::SquaredLength(){
 	return x * x + y * y + z * z;
@@ -39,7 +39,7 @@ float Vector3::SquaredLength(){
 float Vector3::Normalize() {
 	Length();
 	// we get inverse Scale so we can multiply it to the factors this reducces the work for the cpu
-	float inverseScale = 1.0 / length;
+	float inverseScale = 1.0f / length;
 	x *= inverseScale;
 	y *= inverseScale;
 	z *= inverseScale;

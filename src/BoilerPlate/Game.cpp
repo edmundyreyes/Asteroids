@@ -1,9 +1,11 @@
 #include "Game.hpp"
 
-const int SHIP_PERSONAL_SPACE = 200;
+const float SHIP_PERSONAL_SPACE = 200;
 const int FULLCIRCLE = 360;
-const int TIME_MAX = 250;
-const int FONT_SIZE = 50;
+const float TIME_MAX = 250;
+const float FONT_SIZE = 50;
+const float NEW_LIFE = 15000;
+const int FONT_COLOR = 250;
 int currentIndex = 0;
 
 irrklang::ISoundEngine *SoundEngine = irrklang::createIrrKlangDevice();
@@ -15,6 +17,7 @@ Game::Game(float width, float height){
 	m_height = height;
 	m_textRenderer.TextManagerInit();
 	InitGameFontColor(255, 255, 255, 255);
+	m_PointsToNewLife = 1;
 	m_GameFont = TTF_OpenFont("Fonts/font.ttf", FONT_SIZE);
 
 	if (m_GameFont == NULL) system("PAUSE");
@@ -31,10 +34,19 @@ void Game::RenderMagazine() {
 	}
 }
 void Game::UpdateGalaxy(float DT) {
-	if (m_Galaxy.size() < 2) m_Galaxy.push_back(Asteroids(1116,360));
+	if (m_Galaxy.size() < 2) {
+		m_Galaxy.push_back(ReturnNewAsteroid());
+		m_Galaxy.push_back(ReturnNewAsteroid());
+	} 
 	for (int i = 0 ; i < m_Galaxy.size() ; i++) {
 		m_Galaxy[i].Update(DT);
 	}
+}
+void Game::OnResize(float width, float height) {
+	m_width = width;
+	m_height = height;
+	for (int i = 0; i < m_Galaxy.size(); i++) m_Galaxy[i].OnResize(m_width, m_height);
+	for (int i = 0; i < m_Magazine.size(); i++) m_Magazine[i].OnResize(m_width, m_height);
 }
 void Game::UpdateMagazine(float DT) {
 	for (int i = 0; i < m_Magazine.size(); i++) {
@@ -58,13 +70,20 @@ void Game::DrawBulletCircle() {
 		m_Magazine[i].DrawHollowCircle();
 	}
 }
-void Game::CreateNewAsteroid(float m_width,float m_height) {
+void Game::CreateNewAsteroid() {
 	if(m_debuggTool){
 		Asteroids rock = Asteroids(m_width, m_height);
 		rock.angle = rand() % FULLCIRCLE;
 		rock.position = Vector2(rand(), rand());
 		m_Galaxy.push_back(rock);
 	}
+}
+Asteroids Game::ReturnNewAsteroid() {
+	Asteroids rock = Asteroids(m_width, m_height);
+	rock.angle = rand() % FULLCIRCLE;
+	rock.position = Vector2(rand(), rand());
+	m_Galaxy.push_back(rock);
+	return rock;
 }
 void Game::ShootNewBullet(Player ship) {
 	Bullet bulletCasket = Bullet(ship);
@@ -176,9 +195,17 @@ void Game::Update(float DT, Player &ship) {
 	UpdateGalaxy(DT);
 	UpdateMagazine(DT);
 	ShipCollision(ship);
+	CheckForAnotherLife(ship);
 	BulletCollision();
 }
-
+void Game::CheckForAnotherLife(Player &ship) {
+	if (m_PointsToNewLife*NEW_LIFE - m_score <= 0)
+	{
+		ship.PlusStock();
+		m_PointsToNewLife++;
+		SoundEngine->play2D("audio/extraShip.wav");
+	}
+}
 void Game::DebugMode(Player ship) {
 	if (m_debuggTool) { 
 		DrawAsteroidCircles();
@@ -186,9 +213,9 @@ void Game::DebugMode(Player ship) {
 		DrawBulletCircle();
 		for (int i = 0; i < m_Galaxy.size(); i++)
 			RenderLines(ship,m_Galaxy[i]);
+		Fps();
 	}
 }
-
 void Game::Fps() {
 	glLoadIdentity();
 	glBegin(GL_LINE_STRIP);

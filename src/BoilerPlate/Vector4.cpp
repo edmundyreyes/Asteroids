@@ -35,7 +35,7 @@ float Vector4::SquaredLength() {
 float Vector4::Normalize() {
 	Length();
 	// we get inverse Scale so we can multiply it to the factors this reducces the work for the cpu
-	float inverseScale = 1.0 / length;
+	float inverseScale = 1.0f / length;
 	x *= inverseScale;
 	y *= inverseScale;
 	z *= inverseScale;

@@ -10,13 +10,13 @@ public:
 	
 	///// Funciones ///////////////////////////////////////////////
 	
-	int floatToInt					 (float );
-	int floatToEven					 (float );
-	float clamp			 (float , int , int );
-	float degreesToRadians			  ( int );
-	int radiansToDegrees			( float );
-	int radiansDistance		( float , float );
-	int angularDistance			( int , int );
+	float floatToInt					 (float );
+	float floatToEven					 (float );
+	float clamp			 (float ,float,float);
+	float degreesToRadians			  (float);
+	float radiansToDegrees			( float );
+	float radiansDistance		( float , float );
+	float angularDistance			( float , float );
 	bool isAPowerOfTwo				  ( int );
 	float interpolate(float , float , float );
 

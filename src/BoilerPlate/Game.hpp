@@ -8,7 +8,7 @@
 
 struct Game
 {
-	Game						 (float,float);
+	Game								(float,float);
 	void RenderGalaxy					(void);
 	void RenderMagazine					(void);
 	void DrawAsteroidCircles			(void);
@@ -26,14 +26,17 @@ struct Game
 	void ShootNewBullet					(Player);
 	bool KillBullet						(Bullet);
 	void StartUpRoutine					(float, float);
-	void CreateNewAsteroid				(float, float);
+	void CreateNewAsteroid				(void);
+	Asteroids ReturnNewAsteroid			(void);
 	float CalculateDistance				(Entity, Entity);
 	bool DetectColision					(Entity, Entity);
 	void RenderLines					(Entity, Entity);
+	void CheckForAnotherLife			(Player &);
+	void OnResize						(float, float);
 	inline void ToggleDebuggTool		(void) { m_debuggTool = !m_debuggTool; }
 
-	void InitGameFontColor(int, int, int, int);
-	void RenderGameGUI(Player ship);
+	void InitGameFontColor				(int, int, int, int);
+	void RenderGameGUI					(Player );
 
 
 	// members
@@ -43,6 +46,7 @@ struct Game
 	bool m_debuggTool;
 	int m_time;
 	int m_score;
+	float m_PointsToNewLife;
 	TextManager m_textRenderer;
 	TTF_Font *m_GameFont;
 	SDL_Color m_GameFontColor;

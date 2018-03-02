@@ -1,8 +1,8 @@
 #include "Entity.hpp"
 /////// Constructors //////////////////////////////////////////////////////////////////////
-Entity::Entity(int width, int height) {
+Entity::Entity(float width, float height) {
 	mass = 1.5f;
-	calcMinMax(width, height);
+	CalcMinMax(width, height);
 	
 }
 
@@ -10,7 +10,7 @@ Entity::Entity() {
 
 }
 
-void Entity::calcMinMax(int width, int height) {
+void Entity::CalcMinMax(float width, float height) {
 	float halfWidth = width * 0.5f;
 	float halfHeight = height * 0.5f;
 
@@ -30,7 +30,7 @@ void Entity::Update( float DT){
 	position.x += velocity.x * DT;
 	position.y += velocity.y * DT;
 	
-	position.x = Wrap(position.x,minWidth,maxWidth);
+	position.x = Wrap(position.x, minWidth , maxWidth);
 	position.y = Wrap(position.y, minHeight, maxHeight);
 
 }
@@ -80,4 +80,7 @@ void Entity::DrawHollowCircle() {
 	}
 	glEnd();
 	
+}
+void Entity::OnResize(float width, float height) {
+	CalcMinMax(width,height);
 }

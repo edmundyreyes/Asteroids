@@ -32,8 +32,9 @@ struct Player : public Entity {
 
 	void SetLive(bool);
 	void Killit(void);
-	int GetStocks(void);
-	void SetStocks(int);
+	float GetStocks(void);
+	void PlusStock();
+	void DisplayLives(void);
 	
 	/// members ///////////////////////////////////////////////
 
@@ -48,6 +49,6 @@ struct Player : public Entity {
 	std::vector <Vector2> pointsThruster;
 
 private:
-	int stocks;
+	float stocks;
 	bool live;
 };

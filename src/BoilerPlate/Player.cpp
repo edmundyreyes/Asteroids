@@ -99,7 +99,6 @@ void Player::PushDrawEntity() {
 	pointsContainer.push_back(Vector2(-12, -10));
 }
 void Player::Render() {
-	cout << position.x << "   " << position.y << endl;
 	if (stocks > 0 && live) {
 		glLoadIdentity();
 		glColor3f(0, 0.5, 0.5);
@@ -108,12 +107,6 @@ void Player::Render() {
 		DrawEntityPolygon();
 		DrawThruster();
 	}
-}
-bool Player::GetLive() {
-	return live;
-}
-void Player::SetLive(bool status) {
-	live = status;
 }
 void Player::Killit() {
 	stocks--;
@@ -133,4 +126,16 @@ void Player::Invulnerablity(float DT) {
 			timer = 0;
 		}
 	}
+}
+bool Player::GetLive() {
+	return live;
+}
+void Player::SetLive(bool status) {
+	live = status;
+}
+int Player::GetStocks() {
+	return stocks;
+}
+void Player::SetStocks(int numberOfLife ) {
+	stocks = numberOfLife;
 }

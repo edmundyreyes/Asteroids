@@ -2,8 +2,8 @@
 const float ZERO = 0.0f;
 const float SPACE_MAGIC = 30.0f;
 const float MAX_SPEED = 600.0f;
-const float BULLET_LIFE = 80;
-const float BULLET_RADIUS = 5;
+const float BULLET_LIFE = 80.0f;
+const float BULLET_RADIUS = 5.0f;
 
 Bullet::Bullet() {}
 

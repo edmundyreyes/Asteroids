@@ -8,12 +8,11 @@
 
 struct Game
 {
-	Game(void);
+	Game						 (float,float);
 	void RenderGalaxy					(void);
 	void RenderMagazine					(void);
 	void DrawAsteroidCircles			(void);
 	void DrawBulletCircle				(void);
-	void Render							(void);
 	void Fps							(void);
 	void DeleteAsteroid					(void);
 	void BulletCollision				(void);
@@ -23,6 +22,7 @@ struct Game
 	bool CheckCollisionWithMagazine		(Asteroids);
 	void ShipCollision					(Player &);
 	void DebugMode						(Player);
+	void Render							(Player);
 	void ShootNewBullet					(Player);
 	bool KillBullet						(Bullet);
 	void StartUpRoutine					(float, float);
@@ -30,21 +30,24 @@ struct Game
 	float CalculateDistance				(Entity, Entity);
 	bool DetectColision					(Entity, Entity);
 	void RenderLines					(Entity, Entity);
-	inline void ToggleDebuggTool		(void) { debuggTool = !debuggTool; }
+	inline void ToggleDebuggTool		(void) { m_debuggTool = !m_debuggTool; }
+
 	void InitGameFontColor(int, int, int, int);
-	void RenderGameGUI();
+	void RenderGameGUI(Player ship);
 
 
 	// members
-	std::vector<Asteroids> Galaxy;
-	std::vector<Bullet> Magazine;
-	std::vector<float> Framerates;
-	bool debuggTool;
-	int time;
-	int score;
-	TextManager textRenderer;
-	TTF_Font *gameFont;
-	SDL_Color gameFontColor;
+	std::vector<Asteroids> m_Galaxy;
+	std::vector<Bullet> m_Magazine;
+	std::vector<float> m_Framerates;
+	bool m_debuggTool;
+	int m_time;
+	int m_score;
+	TextManager m_textRenderer;
+	TTF_Font *m_GameFont;
+	SDL_Color m_GameFontColor;
+	float m_width;
+	float m_height;
 	
 };
 

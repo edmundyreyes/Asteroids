@@ -1,18 +1,12 @@
 #include "TextManager.hpp"
-
-
 TextManager::TextManager(){
 }
-
-TextManager::TextManager(TTF_Font* newFont, SDL_Color newColor)
-{
+TextManager::TextManager(TTF_Font* newFont, SDL_Color newColor){
 	font = newFont;
 	color = newColor;
 
 }
-
-void TextManager::TextManagerInit()
-{
+void TextManager::TextManagerInit(){
 	if (TTF_Init() == -1) {
 		SDL_Log("TTF_Init: %s\n", TTF_GetError());
 
@@ -31,17 +25,14 @@ void TextManager::TextManagerInit()
 		link_version->minor,
 		link_version->patch);
 }
-
-unsigned int TextManager::power_two_floor(unsigned int val)
-{
+unsigned int TextManager::power_two_floor(unsigned int val){
 	unsigned int power = 2, nextVal = power * 2;
 	while ((nextVal *= 2) <= val)
 		power *= 2;
 	return power * 2;
 }
 
-void TextManager::RenderText(std::string message, SDL_Color color, float x, float y, int size)
-{
+void TextManager::RenderText(std::string message, SDL_Color color, float x, float y, int size){
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -41,12 +41,9 @@ Asteroids::Asteroids(Asteroid_Size size, Asteroids rock) :
 	velocity = Vector2(ZERO, ZERO);
 	radius = asteroid_Size * ASTEROID_RADIO;
 }
-
-
 int Asteroids::Asteroid_GetSize() {
 	return asteroid_Size;
 }
-
 void Asteroids::Update( float DT ) {
 	ASTEROID_ROTATE_ANGLE += ASTEROID_ROTATE_SPEED;
 	ApplyImpulse(Vector2(SPACE_MAGIC, SPACE_MAGIC));
@@ -59,7 +56,6 @@ void Asteroids::Update( float DT ) {
 	}
 	Entity::Update(DT);
 }
-
 void Asteroids::PushDrawEntity() {
 	int size = Asteroid_GetSize();
 

@@ -8,7 +8,7 @@ MathUtilities::MathUtilities(){
 float MathUtilities::PI = 3.14159226;
 
 int MathUtilities::floatToInt(float x){
-	int y = 0;
+	float y = 0;
 	y = round(x);
 	return y;
 }

@@ -25,24 +25,27 @@ struct Player : public Entity {
 	void PushDrawThruster(void);
 	void DrawThruster(void);
 	bool GetLive(void);
-	void SetLive(bool);
-	void Killit(void);
 
 	void ApplyImpulse(Vector2) override;
 	inline void ToggleMove() { moving = !moving; }
 	inline void ToggleLive() { live = !live; }
+
+	void SetLive(bool);
+	void Killit(void);
+	int GetStocks(void);
+	void SetStocks(int);
 	
 	/// members ///////////////////////////////////////////////
 
 	float mass;
 	float angle;
+	bool moving;
 	int screenWidth;
 	int screenHeight;
 	bool trushterBool;
-	std::vector <Vector2> pointsThruster;
-	bool moving;
 	float currentSpeed;
 	void Invulnerablity(float);
+	std::vector <Vector2> pointsThruster;
 
 private:
 	int stocks;

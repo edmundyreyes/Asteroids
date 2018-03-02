@@ -17,7 +17,7 @@ namespace Engine
 		m_playerONE  = new Player(m_width, m_height);
 		antiAsteroidsBullet =  Bullet(*m_playerONE);
 
-		m_Game = new Game();
+		m_Game = new Game(m_width, m_height);
 		m_Game->StartUpRoutine(m_width, m_height);
 
 		inputManager = new InputManager();
@@ -261,7 +261,7 @@ namespace Engine
 		glClear(GL_COLOR_BUFFER_BIT);
 		//if (m_playerONE.GetLives()) 
 		m_playerONE->Render();
-		m_Game->Render();
+		m_Game->Render(*m_playerONE);
 		m_Game->DebugMode(*m_playerONE);
 
 		SDL_GL_SwapWindow(m_mainWindow);
